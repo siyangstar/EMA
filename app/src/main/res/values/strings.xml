@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">设备维修</string>
+    <string name="home">首页</string>
+    <string name="todo_list">待办任务</string>
+    <string name="patrol">巡检</string>
+    <string name="kpi">KPI</string>
+    <string name="work_order">工单</string>
+    <string name="repair">报修</string>
+</resources>
