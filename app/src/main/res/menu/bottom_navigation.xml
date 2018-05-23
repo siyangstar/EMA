@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_navigation_home"
+        android:icon="@drawable/tab_home_normal"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/bottom_navigation_patrol"
+        android:icon="@drawable/tab_patrol_normal"
+        android:title="@string/patrol" />
+
+    <item
+        android:id="@+id/bottom_navigation_workorder"
+        android:icon="@drawable/tab_work_orderselector"
+        android:title="@string/work_order" />
+
+    <item
+        android:id="@+id/bottom_navigation_kpi"
+        android:icon="@drawable/tab_kpi_selector"
+        android:title="@string/kpi" />
+
+    <item
+        android:id="@+id/bottom_navigation_repair"
+        android:icon="@drawable/tab_repair_selector"
+        android:title="@string/repair" />
+</menu>

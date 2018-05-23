@@ -11,5 +11,6 @@
 
     <color name="bg_gray">#EEEEEE</color>
     <color name="transparent">#00000000</color>
+    <color name="icon_gray">#8e8e93</color>
 
 </resources>
