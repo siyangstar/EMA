@@ -34,5 +34,10 @@ public class AppConstants {
     public static final String SERVER_SOCKET_ADDRESS = "http://ssrv-nodejs.heikuai.com:1994/heikuai"; //长连接socket地址
     public static final String COMPLAIN_PAGE = "http://app.heikuai.com/complaint/index.html"; //投诉页面
 
+    public static final String TAG_PATROL = "patrol";
+    public static final String TAG_WORK_ORDER = "workOrder";
+    public static final String TAG_KPI = "kpi";
+    public static final String TAG_REPAIR = "repair";
+    public static final String TAG_TODO_LIST = "todoList";
 
 }

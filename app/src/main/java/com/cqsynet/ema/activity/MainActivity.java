@@ -1,6 +1,8 @@
 package com.cqsynet.ema.activity;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,24 +10,32 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 import com.cqsynet.ema.R;
+import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.fragment.KpiFragment;
+import com.cqsynet.ema.fragment.PatrolFragment;
+import com.cqsynet.ema.fragment.RepairFragment;
+import com.cqsynet.ema.fragment.WorkOrderFragment;
 import com.cqsynet.ema.view.BottomNavigationViewHelper;
 
 public class MainActivity extends BaseActivity {
 
     private BottomNavigationView mBottomNavi;
     private Fragment mCurrentFragment;
-    private Fragment mNewsMainFragment;
-    private Fragment mSocialFragment;
-    private Fragment mMineFragment;
+    private Fragment mPatrolFragment;
+    private Fragment mWorkOrderFragment;
+    private Fragment mKpiFragment;
+    private Fragment mRepairFragment;
+    private String mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mCategory = getIntent().getStringExtra("category");
+
         mBottomNavi = findViewById(R.id.bottom_navigation_activity_main);
         BottomNavigationViewHelper.disableShiftMode(mBottomNavi);
-
         setBottomNaviColor();
 
         mBottomNavi.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -33,33 +43,33 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottom_navigation_home:
-                        if(mCurrentFragment != mNewsMainFragment) {
-                            showHideFragment(mCurrentFragment, mNewsMainFragment);
-                            mCurrentFragment = mNewsMainFragment;
-                        }
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
                         return true;
                     case R.id.bottom_navigation_patrol:
-                        if(mCurrentFragment != mSocialFragment) {
-                            showHideFragment(mCurrentFragment, mSocialFragment);
-                            mCurrentFragment = mSocialFragment;
+                        if(mCurrentFragment != mPatrolFragment) {
+                            showHideFragment(mCurrentFragment, mPatrolFragment);
+                            mCurrentFragment = mPatrolFragment;
                         }
                         return true;
                     case R.id.bottom_navigation_workorder:
-                        if(mCurrentFragment != mMineFragment) {
-                            showHideFragment(mCurrentFragment, mMineFragment);
-                            mCurrentFragment = mMineFragment;
+                        if(mCurrentFragment != mWorkOrderFragment) {
+                            showHideFragment(mCurrentFragment, mWorkOrderFragment);
+                            mCurrentFragment = mWorkOrderFragment;
                         }
                         return true;
                     case R.id.bottom_navigation_kpi:
-                        if(mCurrentFragment != mMineFragment) {
-                            showHideFragment(mCurrentFragment, mMineFragment);
-                            mCurrentFragment = mMineFragment;
+                        if(mCurrentFragment != mKpiFragment) {
+                            showHideFragment(mCurrentFragment, mKpiFragment);
+                            mCurrentFragment = mKpiFragment;
                         }
                         return true;
                     case R.id.bottom_navigation_repair:
-                        if(mCurrentFragment != mMineFragment) {
-                            showHideFragment(mCurrentFragment, mMineFragment);
-                            mCurrentFragment = mMineFragment;
+                        if(mCurrentFragment != mRepairFragment) {
+                            showHideFragment(mCurrentFragment, mRepairFragment);
+                            mCurrentFragment = mRepairFragment;
                         }
                         return true;
                 }
@@ -67,13 +77,31 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-//        mNewsMainFragment = new NewsMainFragment();
-//        mSocialFragment = new WidgetsFragment();
-//        mMineFragment = new MineFragment();
-//        mCurrentFragment = mNewsMainFragment;
+        initFragment();
+    }
+
+    private void initFragment() {
+        mPatrolFragment = new PatrolFragment();
+        mWorkOrderFragment = new WorkOrderFragment();
+        mKpiFragment = new KpiFragment();
+        mRepairFragment = new RepairFragment();
+
+        if(AppConstants.TAG_PATROL.equals(mCategory)) {
+            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_patrol);
+            mCurrentFragment = mPatrolFragment;
+        } else if (AppConstants.TAG_WORK_ORDER.equals(mCategory)) {
+            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_workorder);
+            mCurrentFragment = mWorkOrderFragment;
+        }else if (AppConstants.TAG_KPI.equals(mCategory)) {
+            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_kpi);
+            mCurrentFragment = mKpiFragment;
+        }else if (AppConstants.TAG_REPAIR.equals(mCategory)) {
+            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_repair);
+            mCurrentFragment = mRepairFragment;
+        }
 //        getFragmentManager()
 //                .beginTransaction()
-//                .add(R.id.flContainer_activity_main, mNewsMainFragment, mNewsMainFragment.getClass().getSimpleName())
+//                .add(R.id.flContainer_activity_main, mCurrentFragment, mCurrentFragment.getClass().getSimpleName())
 //                .commitAllowingStateLoss();
     }
 
@@ -102,25 +130,25 @@ public class MainActivity extends BaseActivity {
      * @param <T>
      */
     public <T extends Fragment> void showHideFragment(T outFragment, T inFragment) {
-//        FragmentManager fManager = getFragmentManager();
-//        // 如果要隐藏的fragment非空，隐藏。
-//        if (outFragment != null) {
-//            fManager.beginTransaction()
-//                    .hide(outFragment)
-//                    .commit();
-//        }
-//        // 先从栈中看是否存在要显示的fagment。
-//        String tag = inFragment.getClass().getSimpleName();
-//        Fragment tempFragment = fManager.findFragmentByTag(tag);
-//        if(tempFragment != null) { // 存在则直接显示。
-//            fManager.beginTransaction()
-//                    .show(inFragment)
-//                    .commitAllowingStateLoss();
-//        } else { // 不存在就添加并显示。
-//            fManager.beginTransaction()
-//                    .add(R.id.flContainer_activity_main, inFragment, tag)
+        FragmentManager fManager = getFragmentManager();
+        // 如果要隐藏的fragment非空，隐藏。
+        if (outFragment != null) {
+            fManager.beginTransaction()
+                    .hide(outFragment)
+                    .commit();
+        }
+        // 先从栈中看是否存在要显示的fagment。
+        String tag = inFragment.getClass().getSimpleName();
+        Fragment tempFragment = fManager.findFragmentByTag(tag);
+        if(tempFragment != null) { // 存在则直接显示。
+            fManager.beginTransaction()
+                    .show(inFragment)
+                    .commitAllowingStateLoss();
+        } else { // 不存在就添加并显示。
+            fManager.beginTransaction()
+                    .add(R.id.flContainer_activity_main, inFragment, tag)
 //                    .addToBackStack(tag)
-//                    .commitAllowingStateLoss();
-//        }
+                    .commitAllowingStateLoss();
+        }
     }
 }

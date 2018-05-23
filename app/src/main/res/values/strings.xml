@@ -6,4 +6,7 @@
     <string name="kpi">KPI</string>
     <string name="work_order">工单</string>
     <string name="repair">报修</string>
+    <string name="sort">综合排序</string>
+    <string name="filter">筛选</string>
+    <string name="request_for_repair">我要报修</string>
 </resources>

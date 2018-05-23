@@ -13,16 +13,16 @@
 
     <item
         android:id="@+id/bottom_navigation_workorder"
-        android:icon="@drawable/tab_work_orderselector"
+        android:icon="@drawable/tab_workorder_normal"
         android:title="@string/work_order" />
 
     <item
         android:id="@+id/bottom_navigation_kpi"
-        android:icon="@drawable/tab_kpi_selector"
+        android:icon="@drawable/tab_kpi_normal"
         android:title="@string/kpi" />
 
     <item
         android:id="@+id/bottom_navigation_repair"
-        android:icon="@drawable/tab_repair_selector"
+        android:icon="@drawable/tab_repair_normal"
         android:title="@string/repair" />
 </menu>

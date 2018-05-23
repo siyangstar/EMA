@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.HomeGridAdapter;
+import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.model.HomeGridObject;
 import com.cqsynet.ema.view.GridDivider;
 
@@ -46,6 +47,23 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
                 intent.setClass(HomeActivity.this, MainActivity.class);
+                switch (position) {
+                    case 0:
+                        intent.putExtra("category", AppConstants.TAG_TODO_LIST);
+                        break;
+                    case 1:
+                        intent.putExtra("category", AppConstants.TAG_PATROL);
+                        break;
+                    case 2:
+                        intent.putExtra("category", AppConstants.TAG_WORK_ORDER);
+                        break;
+                    case 3:
+                        intent.putExtra("category", AppConstants.TAG_KPI);
+                        break;
+                    case 4:
+                        intent.putExtra("category", AppConstants.TAG_REPAIR);
+                        break;
+                }
                 startActivity(intent);
                 finish();
             }

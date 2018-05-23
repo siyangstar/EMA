@@ -8,6 +8,9 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
+/**
+ * 取消BottomNavigationView按钮超过3个时的偏移动画
+ */
 public class BottomNavigationViewHelper {
     @SuppressLint("RestrictedApi")
     public static void disableShiftMode(BottomNavigationView view) {

@@ -4,10 +4,11 @@
     <color name="colorPrimaryDark">@android:color/white</color>
     <color name="colorAccent">#298aea</color>
 
-    <color name="divider">#B6B6B6</color>
+    <color name="divider">#CCCCCC</color>
     <color name="text1">#212121</color>
     <color name="text2">#727272</color>
-    <color name="text3">#CBCBCB</color>
+    <color name="text3">#999999</color>
+    <color name="text4">#CBCBCB</color>
 
     <color name="bg_gray">#EEEEEE</color>
     <color name="transparent">#00000000</color>
