@@ -1,0 +1,8 @@
+<resources>
+    <string-array name="sort">
+        <item>设备编码</item>
+        <item>设备位置</item>
+        <item>设备描述</item>
+        <item>管理部门</item>
+    </string-array>
+</resources>

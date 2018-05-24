@@ -1,6 +1,5 @@
 package com.cqsynet.ema.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.cqsynet.ema.R;
 
-public class WorkOrderFragment extends Fragment implements View.OnClickListener {
+public class WorkOrderFragment extends BaseFragment implements View.OnClickListener {
 
     private Context mContext;
     private FrameLayout mFlContainer;

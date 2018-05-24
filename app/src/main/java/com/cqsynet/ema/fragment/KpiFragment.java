@@ -1,6 +1,5 @@
 package com.cqsynet.ema.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.cqsynet.ema.R;
 
-public class KpiFragment extends Fragment {
+public class KpiFragment extends BaseFragment {
 
     private Context mContext;
 
