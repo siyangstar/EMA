@@ -1,18 +1,21 @@
 package com.cqsynet.ema.model;
 
+import android.os.Bundle;
+
 public class MessageEvent {
 
     private String message;
+    private Bundle mBundle;
 
-    public MessageEvent(String message) {
-        this.message = message;
+    public MessageEvent(Bundle bundle) {
+        mBundle = bundle;
     }
 
-    public String getMessage() {
-        return message;
+    public Bundle getMessage() {
+        return mBundle;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessage(Bundle bundle) {
+        mBundle = bundle;
     }
 }

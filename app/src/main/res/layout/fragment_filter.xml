@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/llButton_fragment_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gray_frame_background">
+
+        <Button
+            android:id="@+id/btnCancel_fragment_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size_largex"
+            android:textColor="@color/text2"
+            android:text="@string/cancel"
+            android:background="@drawable/gray_frame_background"
+            android:foreground="?attr/selectableItemBackground"/>
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnConfirm_fragment_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size_largex"
+            android:textColor="@android:color/white"
+            android:text="@string/confirm"
+            android:background="@color/colorAccent"
+            android:foreground="?attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_fragment_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@id/llButton_fragment_filter"
+        android:layout_alignParentLeft="true">
+
+        <RadioButton
+            android:id="@+id/rbPositon_fragment_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/position"
+            style="@style/CustomRadioBtn"/>
+
+        <RadioButton
+            android:id="@+id/rbSystem_fragment_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/system"
+            style="@style/CustomRadioBtn"/>
+
+    </RadioGroup>
+
+    <View
+        android:id="@+id/line_fragment_filter"
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="@color/divider"
+        android:layout_above="@id/llButton_fragment_filter"
+        android:layout_toRightOf="@id/rg_fragment_filter"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPosition_fragment_filter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llButton_fragment_filter"
+        android:layout_toRightOf="@id/line_fragment_filter"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpSystem_fragment_filter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llButton_fragment_filter"
+        android:layout_toRightOf="@id/line_fragment_filter"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,6 +1,5 @@
 package com.cqsynet.ema.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import com.cqsynet.ema.R;
 
 public class WorkOrderFragment extends BaseFragment implements View.OnClickListener {
 
-    private Context mContext;
     private FrameLayout mFlContainer;
 
     @Nullable
@@ -31,12 +29,6 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
     }
 
     @Override

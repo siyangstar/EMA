@@ -1,6 +1,7 @@
 package com.cqsynet.ema.fragment;
 
-import android.content.Context;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,8 +18,8 @@ import com.cqsynet.ema.model.MessageEvent;
 
 public class RepairFragment extends BaseFragment implements View.OnClickListener {
 
-    private Context mContext;
     private FrameLayout mFlContainer;
+    private Fragment mFilterFragment;
 
     @Nullable
     @Override
@@ -41,12 +42,8 @@ public class RepairFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
+        mFilterFragment = new FilterFragment();
     }
 
     @Override
@@ -68,11 +65,44 @@ public class RepairFragment extends BaseFragment implements View.OnClickListener
                         .show();
                 break;
             case R.id.tvFilter_sort_filter:
+                switchFilter();
                 break;
         }
     }
 
+    /**
+     * 消息监听
+     * @param messageEvent
+     */
+    @Override
     public void onMessageEvent(MessageEvent messageEvent) {
-        super.onMessageEvent(messageEvent);
+        Bundle bundle = messageEvent.getMessage();
+        String type = bundle.getString("type");
+        if(type.equals("cancelFilter")) {
+            mFlContainer.setVisibility(View.GONE);
+        } else if (type.equals("confirmFilter")) {
+            mFlContainer.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 显示/隐藏 筛选界面
+     *
+     */
+    public <T extends Fragment> void switchFilter() {
+        if(mFlContainer.getVisibility() == View.VISIBLE) {
+            mFlContainer.setVisibility(View.GONE);
+        } else {
+            FragmentManager fm = getFragmentManager();
+            String tag = mFilterFragment.getClass().getSimpleName();
+            Fragment tempFragment = fm.findFragmentByTag(tag);
+            if(tempFragment == null) { // 存在则直接显示。
+                 fm.beginTransaction()
+                        .add(R.id.flContainer_fragment_repair, mFilterFragment, tag)
+                        .commitAllowingStateLoss();
+            }
+            mFlContainer.setVisibility(View.VISIBLE);
+        }
+
     }
 }

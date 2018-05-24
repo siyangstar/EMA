@@ -1,6 +1,5 @@
 package com.cqsynet.ema.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 import com.cqsynet.ema.R;
 
 public class KpiFragment extends BaseFragment {
-
-    private Context mContext;
 
     @Nullable
     @Override
@@ -30,9 +27,4 @@ public class KpiFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
 }
