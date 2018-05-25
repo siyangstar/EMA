@@ -22,7 +22,7 @@
         android:title="@string/kpi" />
 
     <item
-        android:id="@+id/bottom_navigation_repair"
-        android:icon="@drawable/tab_repair_normal"
-        android:title="@string/repair" />
+        android:id="@+id/bottom_navigation_report"
+        android:icon="@drawable/tab_report_normal"
+        android:title="@string/report" />
 </menu>

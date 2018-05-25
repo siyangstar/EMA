@@ -5,14 +5,21 @@
     <string name="patrol">巡检</string>
     <string name="kpi">KPI</string>
     <string name="work_order">工单</string>
-    <string name="repair">报修</string>
-    <string name="request_for_repair">我要报修</string>
+    <string name="report">报修</string>
+    <string name="submit_report">我要报修</string>
     <string name="sort">综合排序</string>
     <string name="equip_sort">设备排序</string>
     <string name="filter">筛选</string>
-    <string name="position">位置</string>
+    <string name="location">位置</string>
     <string name="system">系统</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
+    <string name="error_message">问题描述</string>
+    <string name="select_equipment">选择设备</string>
+    <string name="priority">优先级</string>
+    <string name="error_apprearance">故障现象</string>
+    <string name="report_person">报修人</string>
+    <string name="department">部门</string>
+    <string name="report_image">报修图片</string>
 
 </resources>

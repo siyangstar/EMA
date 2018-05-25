@@ -13,7 +13,7 @@ import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.fragment.KpiFragment;
 import com.cqsynet.ema.fragment.PatrolFragment;
-import com.cqsynet.ema.fragment.RepairFragment;
+import com.cqsynet.ema.fragment.ReportFragment;
 import com.cqsynet.ema.fragment.WorkOrderFragment;
 import com.cqsynet.ema.view.BottomNavigationViewHelper;
 
@@ -24,7 +24,7 @@ public class MainActivity extends BaseActivity {
     private Fragment mPatrolFragment;
     private Fragment mWorkOrderFragment;
     private Fragment mKpiFragment;
-    private Fragment mRepairFragment;
+    private Fragment mReportFragment;
     private String mCategory;
 
     @Override
@@ -66,10 +66,10 @@ public class MainActivity extends BaseActivity {
                             mCurrentFragment = mKpiFragment;
                         }
                         return true;
-                    case R.id.bottom_navigation_repair:
-                        if(mCurrentFragment != mRepairFragment) {
-                            showHideFragment(mCurrentFragment, mRepairFragment);
-                            mCurrentFragment = mRepairFragment;
+                    case R.id.bottom_navigation_report:
+                        if(mCurrentFragment != mReportFragment) {
+                            showHideFragment(mCurrentFragment, mReportFragment);
+                            mCurrentFragment = mReportFragment;
                         }
                         return true;
                 }
@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity {
         mPatrolFragment = new PatrolFragment();
         mWorkOrderFragment = new WorkOrderFragment();
         mKpiFragment = new KpiFragment();
-        mRepairFragment = new RepairFragment();
+        mReportFragment = new ReportFragment();
 
         if(AppConstants.TAG_PATROL.equals(mCategory)) {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_patrol);
@@ -96,8 +96,8 @@ public class MainActivity extends BaseActivity {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_kpi);
             mCurrentFragment = mKpiFragment;
         }else if (AppConstants.TAG_REPAIR.equals(mCategory)) {
-            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_repair);
-            mCurrentFragment = mRepairFragment;
+            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_report);
+            mCurrentFragment = mReportFragment;
         }
 //        getFragmentManager()
 //                .beginTransaction()

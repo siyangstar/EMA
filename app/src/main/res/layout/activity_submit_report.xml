@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.SubmitReportActivity">
+
+        <include layout="@layout/titlebar"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/error_message"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_largex"/>
+
+        <EditText
+            android:id="@+id/etMessage_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="top"
+            android:hint="@string/error_message"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_large"
+            android:background="@drawable/shape_edittext_background"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:id="@+id/llSelect_equipment_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_equipment"
+                android:textColor="@color/text2"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <TextView
+                android:id="@+id/tvEquipment_activity_submit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:id="@+id/llLocation_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/location"
+                android:textColor="@color/text2"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <TextView
+                android:id="@+id/tvLocation_activity_submit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:id="@+id/llPriority_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/priority"
+                android:textColor="@color/text2"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <TextView
+                android:id="@+id/tvPriority_activity_submit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:background="@color/bg_gray"/>
+
+        <LinearLayout
+            android:id="@+id/llAppearance_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/error_apprearance"
+                android:textColor="@color/text2"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <TextView
+                android:id="@+id/tvAppearance_activity_submit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:background="@color/bg_gray"/>
+
+        <LinearLayout
+            android:id="@+id/llDepartment_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/department"
+                android:textColor="@color/text2"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <TextView
+                android:id="@+id/tvDepartment_activity_submit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16dp"
+            android:background="@color/divider"/>
+
+        <LinearLayout
+            android:id="@+id/llPerson_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/report_person"
+                android:textColor="@color/text2"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <TextView
+                android:id="@+id/tvPerson_activity_submit_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_size_largex"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/next"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:background="@color/bg_gray"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:text="@string/report_image"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_largex"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvImage_activity_submit_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+
+    </LinearLayout>
+</ScrollView>

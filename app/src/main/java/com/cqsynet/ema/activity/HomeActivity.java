@@ -84,8 +84,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      */
     private void initData() {
         mItemList = new ArrayList<>();
-        String[] titleAry = {getString(R.string.todo_list), getString(R.string.patrol), getString(R.string.work_order), getString(R.string.kpi), getString(R.string.repair)};
-        int[] iconAry = {R.drawable.home_todolist, R.drawable.home_patrol, R.drawable.home_workorder, R.drawable.home_kpi, R.drawable.home_repair};
+        String[] titleAry = {getString(R.string.todo_list), getString(R.string.patrol), getString(R.string.work_order), getString(R.string.kpi), getString(R.string.report)};
+        int[] iconAry = {R.drawable.home_todolist, R.drawable.home_patrol, R.drawable.home_workorder, R.drawable.home_kpi, R.drawable.home_report};
         for(int i = 0; i < titleAry.length; i++) {
             HomeGridObject obj = new HomeGridObject();
             obj.title = titleAry[i];

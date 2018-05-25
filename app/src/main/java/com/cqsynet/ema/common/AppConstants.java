@@ -37,7 +37,7 @@ public class AppConstants {
     public static final String TAG_PATROL = "patrol";
     public static final String TAG_WORK_ORDER = "workOrder";
     public static final String TAG_KPI = "kpi";
-    public static final String TAG_REPAIR = "repair";
+    public static final String TAG_REPAIR = "report";
     public static final String TAG_TODO_LIST = "todoList";
 
 }

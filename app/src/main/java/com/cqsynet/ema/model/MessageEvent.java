@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 public class MessageEvent {
 
-    private String message;
     private Bundle mBundle;
 
     public MessageEvent(Bundle bundle) {
