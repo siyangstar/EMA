@@ -17,11 +17,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.AddImageGridAdapter;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
@@ -43,6 +46,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     private int mImageClickPosition; //添加图片的位置
     private static int MAX_IMAGE_NUMBER = 6;
     private static int REQUEST_CODE_OPEN_GALLARY = 1;
+    private static int REQUEST_CODE_SCAN = 2;
     private boolean mHasPermission = false;
     private static String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -125,6 +129,8 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 onBackPressed();
                 break;
             case R.id.ibtnRight_titlebar:
+                Intent intent = new Intent(this, CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN);
                 break;
             case R.id.llSelect_equipment_activity_submit_report:
                 break;
@@ -148,6 +154,18 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
             String imagePath = c.getString(columnIndex);
             c.close();
             setImage(imagePath);
+        } else if (requestCode == REQUEST_CODE_SCAN && resultCode == Activity.RESULT_OK && data != null) {
+            //处理扫描结果
+            Bundle bundle = data.getExtras();
+            if (bundle == null) {
+                return;
+            }
+            if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                String result = bundle.getString(CodeUtils.RESULT_STRING);
+                Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+            } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -292,5 +292,22 @@
             android:overScrollMode="never"
             android:scrollbars="none"/>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_gray">
+
+            <Button
+                android:id="@+id/btnSubmit_activity_submit_report"
+                style="?android:textAppearanceMedium"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_large"
+                android:text="@string/submit"/>
+        </FrameLayout>
+
     </LinearLayout>
 </ScrollView>

@@ -19,6 +19,7 @@ import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.MemoryCookieStore;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,6 +69,8 @@ public class AppManager extends Application {
         mLocationService = new LocationService(getApplicationContext());
         //初始化工具箱
         Utils.init(this);
+        //二维码工具
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     /**

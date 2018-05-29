@@ -21,5 +21,11 @@
     <string name="report_person">报修人</string>
     <string name="department">部门</string>
     <string name="report_image">报修图片</string>
+    <string name="submit">提交</string>
+    <string name="user_login">账号登录</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+    <string name="forget_password">忘记密码</string>
 
 </resources>
