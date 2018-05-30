@@ -25,14 +25,14 @@ public class MainActivity extends BaseActivity {
     private Fragment mWorkOrderFragment;
     private Fragment mKpiFragment;
     private Fragment mReportFragment;
-    private String mCategory;
+    private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mCategory = getIntent().getStringExtra("category");
+        mId = getIntent().getStringExtra("id");
 
         mBottomNavi = findViewById(R.id.bottom_navigation_activity_main);
         BottomNavigationViewHelper.disableShiftMode(mBottomNavi);
@@ -86,23 +86,19 @@ public class MainActivity extends BaseActivity {
         mKpiFragment = new KpiFragment();
         mReportFragment = new ReportFragment();
 
-        if(AppConstants.TAG_PATROL.equals(mCategory)) {
+        if(AppConstants.ID_PATROL.equals(mId)) {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_patrol);
             mCurrentFragment = mPatrolFragment;
-        } else if (AppConstants.TAG_WORK_ORDER.equals(mCategory)) {
+        } else if (AppConstants.ID_WORKORDER.equals(mId)) {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_workorder);
             mCurrentFragment = mWorkOrderFragment;
-        }else if (AppConstants.TAG_KPI.equals(mCategory)) {
+        }else if (AppConstants.ID_KPI.equals(mId)) {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_kpi);
             mCurrentFragment = mKpiFragment;
-        }else if (AppConstants.TAG_REPAIR.equals(mCategory)) {
+        }else if (AppConstants.ID_REPORT.equals(mId)) {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_report);
             mCurrentFragment = mReportFragment;
         }
-//        getFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.flContainer_activity_main, mCurrentFragment, mCurrentFragment.getClass().getSimpleName())
-//                .commitAllowingStateLoss();
     }
 
     /**

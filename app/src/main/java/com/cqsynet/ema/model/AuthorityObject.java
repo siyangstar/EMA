@@ -1,8 +1,7 @@
 package com.cqsynet.ema.model;
 
-public class HomeGridObject {
+public class AuthorityObject {
     public String id;
-    public String title;
-    public int imageRes;
+    public String name;
     public String isShow;
 }

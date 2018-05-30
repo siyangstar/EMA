@@ -1,5 +1,6 @@
 package com.cqsynet.ema.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class BaseActivity extends AppCompatActivity {
 
+    public ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getInstance().addActivity(this);// 加入Activity容器
         BarUtils.setStatusBarLightMode(this, true);
+        mProgressDialog = new ProgressDialog(this);
     }
 
     @Override

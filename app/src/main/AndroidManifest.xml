@@ -25,10 +25,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"/>
-        <activity android:name=".activity.SubmitReportActivity">
-        </activity>
-        <activity android:name=".activity.LoginActivity">
-        </activity>
+        <activity android:name=".activity.SubmitReportActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.ForgetPswActivity"/>
     </application>
 
 </manifest>

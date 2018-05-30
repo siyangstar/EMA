@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,10 +13,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.HomeGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.db.AuthorityDao;
+import com.cqsynet.ema.model.AuthorityObject;
 import com.cqsynet.ema.model.HomeGridObject;
+import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.cqsynet.ema.view.GridDivider;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -25,6 +30,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //是否有已登录,若未登录,跳转到登录界面
+        if (TextUtils.isEmpty(SharedPreferencesUtil.getTagString(this, SharedPreferencesUtil.SEESION_ID))) {
+            Intent intent = new Intent();
+            intent.setClass(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_home);
 
         TextView tvTitle = findViewById(R.id.tvTitle_titlebar);
@@ -47,23 +61,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
                 intent.setClass(HomeActivity.this, MainActivity.class);
-                switch (position) {
-                    case 0:
-                        intent.putExtra("category", AppConstants.TAG_TODO_LIST);
-                        break;
-                    case 1:
-                        intent.putExtra("category", AppConstants.TAG_PATROL);
-                        break;
-                    case 2:
-                        intent.putExtra("category", AppConstants.TAG_WORK_ORDER);
-                        break;
-                    case 3:
-                        intent.putExtra("category", AppConstants.TAG_KPI);
-                        break;
-                    case 4:
-                        intent.putExtra("category", AppConstants.TAG_REPAIR);
-                        break;
-                }
+                intent.putExtra("id", mItemList.get(position).id);
                 startActivity(intent);
                 finish();
             }
@@ -83,13 +81,20 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 初始化数据
      */
     private void initData() {
+        ArrayList<AuthorityObject> list = AuthorityDao.getInstance(this).queryAuthority();
         mItemList = new ArrayList<>();
-        String[] titleAry = {getString(R.string.todo_list), getString(R.string.patrol), getString(R.string.work_order), getString(R.string.kpi), getString(R.string.report)};
-        int[] iconAry = {R.drawable.home_todolist, R.drawable.home_patrol, R.drawable.home_workorder, R.drawable.home_kpi, R.drawable.home_report};
-        for(int i = 0; i < titleAry.length; i++) {
+        Iterator<AuthorityObject> iter = list.iterator();
+        while (iter.hasNext()) {
+            AuthorityObject author = iter.next();
+            if(author.id.equals("3da97fde4f2443b180bc9c1e9237d766")) {
+                //跳过"首页"
+                continue;
+            }
             HomeGridObject obj = new HomeGridObject();
-            obj.title = titleAry[i];
-            obj.imageRes = iconAry[i];
+            obj.id = author.id;
+            obj.title = author.name;
+            obj.imageRes = AppConstants.ICON_MAP.get(author.id);
+            obj.isShow = author.isShow;
             mItemList.add(obj);
         }
     }

@@ -16,7 +16,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.cqsynet.ema.common.Globals;
-import com.cqsynet.ema.common.SharedPreferencesInfo;
+import com.cqsynet.ema.util.SharedPreferencesUtil;
 
 public class LocationService {
 	private LocationClient client = null;
@@ -37,8 +37,8 @@ public class LocationService {
 					public void onReceiveLocation(BDLocation location) {
 						if (null != location && location.getLocType() != BDLocation.TypeServerError) {
 							if(location.getLatitude() != 4.9E-324 && location.getLongitude() != 4.9E-324) {
-								SharedPreferencesInfo.setTagString(locationContext, "latitude", location.getLatitude() + "");
-								SharedPreferencesInfo.setTagString(locationContext, "longitude", location.getLongitude() + "");
+								SharedPreferencesUtil.setTagString(locationContext, "latitude", location.getLatitude() + "");
+								SharedPreferencesUtil.setTagString(locationContext, "longitude", location.getLongitude() + "");
 							}
 							if(Globals.DEBUG) {
                                 StringBuffer sb = new StringBuffer(256);

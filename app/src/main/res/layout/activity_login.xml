@@ -21,13 +21,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvTitle_activity_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="32dp"
                 android:textColor="@android:color/black"
-                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textSize="32sp"
                 android:text="@string/user_login"/>
 
             <android.support.design.widget.TextInputLayout
@@ -61,8 +61,6 @@
                     android:textSize="16sp"
                     android:textColor="@color/text2"
                     android:hint="@string/password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/login"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLength="18"
