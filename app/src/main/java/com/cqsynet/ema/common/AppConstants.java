@@ -55,4 +55,7 @@ public class AppConstants {
         }
     };
 
+    public static final String DICTIONARY_TYPE_WORKORDER_PRIORITY = "gd_yxj"; //字典表类型:工单优先级
+    public static final String DICTIONARY_TYPE_WORKORDER_STATUS = "gd_zt"; //字典表类型:工单状态
+
 }

@@ -30,17 +30,17 @@ public class AuthorityDao {
 
     /**
      * 保存权限记录
-     * @param authorityList
+     * @param list
      */
-    public void saveAuthority(List<AuthorityObject> authorityList) {
+    public void saveAuthority(List<AuthorityObject> list) {
         DBHelper db = new DBHelper(mContext);
-        db.getWritableDatabase().execSQL("delete from " + DBHelper.AUTHORITY_TABLE);
-        for (AuthorityObject authorityObject : authorityList) {
+        db.getWritableDatabase().execSQL("delete from " + DBHelper.TABLE_AUTHORITY);
+        for (AuthorityObject object : list) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(DBHelper.AUTHORITY_COL_ID, authorityObject.id);
-            contentValues.put(DBHelper.AUTHORITY_COL_NAME, authorityObject.name);
-            contentValues.put(DBHelper.AUTHORITY_COL_IS_SHOW, authorityObject.isShow);
-            db.getWritableDatabase().insert(DBHelper.AUTHORITY_TABLE, null, contentValues);
+            contentValues.put(DBHelper.AUTHORITY_COL_ID, object.id);
+            contentValues.put(DBHelper.AUTHORITY_COL_NAME, object.name);
+            contentValues.put(DBHelper.AUTHORITY_COL_IS_SHOW, object.isShow);
+            db.getWritableDatabase().insert(DBHelper.TABLE_AUTHORITY, null, contentValues);
         }
         db.close();
     }
@@ -52,7 +52,7 @@ public class AuthorityDao {
     public ArrayList<AuthorityObject> queryAuthority() {
         ArrayList<AuthorityObject> list = new ArrayList<>();
         DBHelper db = new DBHelper(mContext);
-        Cursor cursor = db.getReadableDatabase().query(DBHelper.AUTHORITY_TABLE, null, null, null, null, null, null);
+        Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_AUTHORITY, null, null, null, null, null, null);
         if(cursor != null && cursor.moveToFirst()) {
             do {
                 AuthorityObject obj = new AuthorityObject();

@@ -154,14 +154,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     LoginResponseObject responseObj = gson.fromJson(response, LoginResponseObject.class);
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
-                            SharedPreferencesUtil.setTagString(LoginActivity.this, SharedPreferencesUtil.SEESION_ID, responseObj.sessionid);
-                            AuthorityDao.getInstance(LoginActivity.this).saveAuthority(responseObj.power);
+                            SharedPreferencesUtil.setTagString(LoginActivity.this, SharedPreferencesUtil.SEESION_ID, responseObj.data.sessionid);
+                            AuthorityDao.getInstance(LoginActivity.this).saveAuthority(responseObj.data.power);
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            ToastUtils.showShort(responseObj.message);
+                            ToastUtils.showShort(responseObj.msg);
                         }
                     }
                 }

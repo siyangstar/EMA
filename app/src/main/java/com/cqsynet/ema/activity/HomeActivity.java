@@ -15,13 +15,19 @@ import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.HomeGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.db.AuthorityDao;
+import com.cqsynet.ema.db.DictionaryDao;
 import com.cqsynet.ema.model.AuthorityObject;
+import com.cqsynet.ema.model.DictionaryResponseObject;
 import com.cqsynet.ema.model.HomeGridObject;
+import com.cqsynet.ema.network.OkgoRequest;
 import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.cqsynet.ema.view.GridDivider;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -110,7 +116,45 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 更新数据字典
      */
     private void updateDictionary() {
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) != 0) {
+            getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY);
+        }
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) != 0) {
+            getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS);
+        }
+    }
 
+    /**
+     * 从服务器获取字典表数据
+     *
+     * @param type 类型
+     */
+    private void getDictionary(String type) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("type", type);
+        OkgoRequest.excute(AppConstants.URL_DICTIONARY, paramMap, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                    DictionaryResponseObject responseObj = gson.fromJson(response, DictionaryResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            DictionaryDao.getInstance(HomeActivity.this).saveDictionary(responseObj.data.data);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    } else {
+                        ToastUtils.showShort(R.string.request_failed);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.request_failed);
+            }
+        });
     }
 
 }

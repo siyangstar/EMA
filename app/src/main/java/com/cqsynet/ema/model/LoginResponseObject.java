@@ -5,10 +5,13 @@ import java.util.ArrayList;
 /**
  * 登录接口返回类
  */
-public class LoginResponseObject {
+public class LoginResponseObject extends ResponseObject {
 
-    public String message;
-    public String ret;
-    public String sessionid;
-    public ArrayList<AuthorityObject> power;
+    public DataObject data;
+
+    public class DataObject {
+        public String sessionid;
+        public ArrayList<AuthorityObject> power;
+    }
+
 }
