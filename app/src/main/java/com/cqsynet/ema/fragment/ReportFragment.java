@@ -58,7 +58,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
                         .title(R.string.equip_sort)
                         .dividerColorRes(R.color.divider)
                         .itemsGravity(GravityEnum.CENTER)
-                        .items(R.array.sort)
+                        .items(R.array.equipment_sort)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -111,6 +111,5 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
             }
             mFlContainer.setVisibility(View.VISIBLE);
         }
-
     }
 }

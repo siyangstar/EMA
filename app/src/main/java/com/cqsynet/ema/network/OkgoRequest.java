@@ -9,10 +9,12 @@
  */
 package com.cqsynet.ema.network;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.common.Globals;
+import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -31,14 +33,19 @@ public class OkgoRequest {
      *
      * @param url
      */
-    public static void excute(String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
+    public static void excute(Context context, String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
         if(Globals.DEBUG) {
             Gson gson = new Gson();
             String requestStr = gson.toJson(paramMap).toString();
             Log.d(TAG, "请求:  ");
             Log.d(TAG, requestStr.trim());
         }
-        OkGo.<String>post(AppConstants.URL_MAIN + url)
+        if(url.equals(AppConstants.URL_LOGIN)) {
+            url = AppConstants.URL_MAIN + url;
+        } else {
+            url = AppConstants.URL_MAIN + url + ";JSESSIONID=" + SharedPreferencesUtil.getTagString(context, SharedPreferencesUtil.SEESION_ID);
+        }
+        OkGo.<String>post(url)
                 .params(paramMap)
                 .execute(new StringCallback() {
                     @Override
@@ -63,7 +70,12 @@ public class OkgoRequest {
                                     Log.d(TAG, sub.trim());
                                 }
                             }
-                            // 调用UI端的回调函数
+//                            // 调用UI端的回调函数
+//                            Gson gson = new Gson();
+//                            ResponseObject object = gson.fromJson(msg, ResponseObject.class);
+//                            if(object.ret.equals("1") && object.msg.equals("session过期")) {
+//
+//                            }
                             callbackIf.onResponse(msg);
                         } catch (Exception e) {
                             callbackIf.onErrorResponse();

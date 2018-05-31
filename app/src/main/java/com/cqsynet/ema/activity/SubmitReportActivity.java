@@ -129,8 +129,31 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 onBackPressed();
                 break;
             case R.id.ibtnRight_titlebar:
-                Intent intent = new Intent(this, CaptureActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SCAN);
+                mHasPermission = AndPermission.hasPermissions(SubmitReportActivity.this, Manifest.permission.CAMERA);
+                if(!mHasPermission) {
+                    AndPermission.with(SubmitReportActivity.this)
+                            .runtime()
+                            .permission(Manifest.permission.CAMERA)
+                            .onGranted(new Action<List<String>>() {
+                                @Override
+                                public void onAction(List<String> permissions) {
+                                    Intent intent = new Intent(SubmitReportActivity.this, CaptureActivity.class);
+                                    startActivityForResult(intent, REQUEST_CODE_SCAN);
+                                }
+                            })
+                            .onDenied(new Action<List<String>>() {
+                                @Override
+                                public void onAction(@NonNull List<String> permissions) {
+                                    if (AndPermission.hasAlwaysDeniedPermission(SubmitReportActivity.this, permissions)) {
+                                        ToastUtils.showLong("您需要允许摄像头的权限才可以正常使用嘿快的全部功能, 请到手机系统的设置界面打开权限");
+                                    }
+                                }
+                            })
+                            .start();
+                } else {
+                    Intent intent = new Intent(this, CaptureActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_SCAN);
+                }
                 break;
             case R.id.llSelect_equipment_activity_submit_report:
                 break;

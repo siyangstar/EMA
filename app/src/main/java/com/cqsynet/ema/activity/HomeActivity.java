@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -44,18 +43,19 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             intent.setClass(this, LoginActivity.class);
             startActivity(intent);
             finish();
+            return;
         }
 
         setContentView(R.layout.activity_home);
 
         TextView tvTitle = findViewById(R.id.tvTitle_titlebar);
-        ImageButton ibtnQuit = findViewById(R.id.ibtnLeft_titlebar);
+        TextView tvLogout = findViewById(R.id.tvRight_titlebar);
         mRecyclerView = findViewById(R.id.recyclerview_activity_main);
 
         tvTitle.setText(R.string.home);
-        ibtnQuit.setVisibility(View.VISIBLE);
-        ibtnQuit.setImageResource(R.drawable.btn_back_selector);
-        ibtnQuit.setOnClickListener(this);
+        tvLogout.setVisibility(View.VISIBLE);
+        tvLogout.setText(R.string.quit);
+        tvLogout.setOnClickListener(this);
 
         initRecyclerView();
         updateDictionary();
@@ -64,7 +64,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibtnLeft_titlebar:
+            case R.id.tvRight_titlebar:
+                logout();
                 onBackPressed();
                 break;
         }
@@ -116,10 +117,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 更新数据字典
      */
     private void updateDictionary() {
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) != 0) {
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) == 0) {
             getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY);
         }
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) != 0) {
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) == 0) {
             getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS);
         }
     }
@@ -132,7 +133,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void getDictionary(String type) {
         Map<String, String> paramMap = new HashMap<>();
         paramMap.put("type", type);
-        OkgoRequest.excute(AppConstants.URL_DICTIONARY, paramMap, new OkgoRequest.IResponseCallback() {
+        OkgoRequest.excute(this, AppConstants.URL_DICTIONARY, paramMap, new OkgoRequest.IResponseCallback() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
@@ -156,5 +157,19 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             }
         });
     }
+
+    private void logout() {
+        OkgoRequest.excute(this, AppConstants.URL_LOGOUT, new HashMap(), new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                SharedPreferencesUtil.removeData(HomeActivity.this, SharedPreferencesUtil.SEESION_ID);
+            }
+
+            @Override
+            public void onErrorResponse() {
+            }
+        });
+    }
+
 
 }

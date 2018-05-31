@@ -146,7 +146,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         paramMap.put("password", psw);
         paramMap.put("mobileLogin", "true");
 
-        OkgoRequest.excute(AppConstants.URL_LOGIN, paramMap, new IResponseCallback() {
+        OkgoRequest.excute(this, AppConstants.URL_LOGIN, paramMap, new IResponseCallback() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {

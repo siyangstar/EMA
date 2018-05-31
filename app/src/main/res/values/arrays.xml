@@ -1,8 +1,19 @@
 <resources>
-    <string-array name="sort">
+    <string-array name="equipment_sort">
         <item>设备编码</item>
         <item>设备位置</item>
         <item>设备描述</item>
         <item>管理部门</item>
+    </string-array>
+
+    <string-array name="workorder_sort">
+        <item>工单编码</item>
+        <item>工单状态</item>
+        <item>工单描述</item>
+        <item>设备信息</item>
+        <item>位置信息</item>
+        <item>创建日期</item>
+        <item>责任人</item>
+        <item>部门</item>
     </string-array>
 </resources>

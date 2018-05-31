@@ -72,14 +72,14 @@ public class MainActivity extends BaseActivity {
                         }
                         break;
                     case R.id.bottom_navigation_workorder:
-                        for(AuthorityObject obj : mAuthorityList) {
-                            if(obj.id.equals(AppConstants.ID_WORKORDER)) {
-                                if(obj.isShow.equals("0")) {
-                                    ToastUtils.showShort(R.string.no_authority);
-                                    return false;
-                                }
-                            }
-                        }
+//                        for(AuthorityObject obj : mAuthorityList) {
+//                            if(obj.id.equals(AppConstants.ID_WORKORDER)) {
+//                                if(obj.isShow.equals("0")) {
+//                                    ToastUtils.showShort(R.string.no_authority);
+//                                    return false;
+//                                }
+//                            }
+//                        }
                         if(mCurrentFragment != mWorkOrderFragment) {
                             showHideFragment(mCurrentFragment, mWorkOrderFragment);
                             mCurrentFragment = mWorkOrderFragment;
@@ -100,14 +100,14 @@ public class MainActivity extends BaseActivity {
                         }
                         break;
                     case R.id.bottom_navigation_report:
-                        for(AuthorityObject obj : mAuthorityList) {
-                            if(obj.id.equals(AppConstants.ID_REPORT)) {
-                                if(obj.isShow.equals("0")) {
-                                    ToastUtils.showShort(R.string.no_authority);
-                                    return false;
-                                }
-                            }
-                        }
+//                        for(AuthorityObject obj : mAuthorityList) {
+//                            if(obj.id.equals(AppConstants.ID_REPORT)) {
+//                                if(obj.isShow.equals("0")) {
+//                                    ToastUtils.showShort(R.string.no_authority);
+//                                    return false;
+//                                }
+//                            }
+//                        }
                         if(mCurrentFragment != mReportFragment) {
                             showHideFragment(mCurrentFragment, mReportFragment);
                             mCurrentFragment = mReportFragment;
