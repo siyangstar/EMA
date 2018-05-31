@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.HomeGridAdapter;
@@ -50,22 +51,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         ibtnQuit.setImageResource(R.drawable.btn_back_selector);
         ibtnQuit.setOnClickListener(this);
 
-        initData();
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        mRecyclerView.addItemDecoration(new GridDivider(this, 1, getResources().getColor(R.color.divider), 2));
-        HomeGridAdapter adapter = new HomeGridAdapter(R.layout.item_home_grid, mItemList);
-        mRecyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent();
-                intent.setClass(HomeActivity.this, MainActivity.class);
-                intent.putExtra("id", mItemList.get(position).id);
-                startActivity(intent);
-                finish();
-            }
-        });
+        initRecyclerView();
+        updateDictionary();
     }
 
     @Override
@@ -78,9 +65,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * 初始化数据
+     * 初始化recyclerView
      */
-    private void initData() {
+    private void initRecyclerView() {
         ArrayList<AuthorityObject> list = AuthorityDao.getInstance(this).queryAuthority();
         mItemList = new ArrayList<>();
         Iterator<AuthorityObject> iter = list.iterator();
@@ -97,6 +84,33 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             obj.isShow = author.isShow;
             mItemList.add(obj);
         }
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.addItemDecoration(new GridDivider(this, 1, getResources().getColor(R.color.divider), 2));
+        HomeGridAdapter adapter = new HomeGridAdapter(R.layout.item_home_grid, mItemList);
+        mRecyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                HomeGridObject object = mItemList.get(position);
+                if(object.isShow.equals("0")) {
+                    ToastUtils.showShort(R.string.no_authority);
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(HomeActivity.this, MainActivity.class);
+                    intent.putExtra("id", mItemList.get(position).id);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
+    /**
+     * 更新数据字典
+     */
+    private void updateDictionary() {
+
     }
 
 }

@@ -36,5 +36,6 @@
     <string name="input_verify_code">输入验证码</string>
     <string name="input_new_password">输入新密码</string>
     <string name="send_verify_code">发送验证码</string>
+    <string name="no_authority">您没有权限访问此模块</string>
 
 </resources>

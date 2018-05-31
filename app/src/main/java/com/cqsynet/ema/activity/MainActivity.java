@@ -9,13 +9,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.db.AuthorityDao;
 import com.cqsynet.ema.fragment.KpiFragment;
 import com.cqsynet.ema.fragment.PatrolFragment;
 import com.cqsynet.ema.fragment.ReportFragment;
 import com.cqsynet.ema.fragment.WorkOrderFragment;
+import com.cqsynet.ema.model.AuthorityObject;
 import com.cqsynet.ema.view.BottomNavigationViewHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
@@ -26,6 +31,7 @@ public class MainActivity extends BaseActivity {
     private Fragment mKpiFragment;
     private Fragment mReportFragment;
     private String mId;
+    private ArrayList<AuthorityObject> mAuthorityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,39 +47,74 @@ public class MainActivity extends BaseActivity {
         mBottomNavi.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(mAuthorityList == null) {
+                    mAuthorityList = AuthorityDao.getInstance(MainActivity.this).queryAuthority();
+                }
                 switch (item.getItemId()) {
                     case R.id.bottom_navigation_home:
                         Intent intent = new Intent();
                         intent.setClass(MainActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
-                        return true;
+                        break;
                     case R.id.bottom_navigation_patrol:
+                        for(AuthorityObject obj : mAuthorityList) {
+                            if(obj.id.equals(AppConstants.ID_PATROL)) {
+                                if(obj.isShow.equals("0")) {
+                                    ToastUtils.showShort(R.string.no_authority);
+                                    return false;
+                                }
+                            }
+                        }
                         if(mCurrentFragment != mPatrolFragment) {
                             showHideFragment(mCurrentFragment, mPatrolFragment);
                             mCurrentFragment = mPatrolFragment;
                         }
-                        return true;
+                        break;
                     case R.id.bottom_navigation_workorder:
+                        for(AuthorityObject obj : mAuthorityList) {
+                            if(obj.id.equals(AppConstants.ID_WORKORDER)) {
+                                if(obj.isShow.equals("0")) {
+                                    ToastUtils.showShort(R.string.no_authority);
+                                    return false;
+                                }
+                            }
+                        }
                         if(mCurrentFragment != mWorkOrderFragment) {
                             showHideFragment(mCurrentFragment, mWorkOrderFragment);
                             mCurrentFragment = mWorkOrderFragment;
                         }
-                        return true;
+                        break;
                     case R.id.bottom_navigation_kpi:
+                        for(AuthorityObject obj : mAuthorityList) {
+                            if(obj.id.equals(AppConstants.ID_KPI)) {
+                                if(obj.isShow.equals("0")) {
+                                    ToastUtils.showShort(R.string.no_authority);
+                                    return false;
+                                }
+                            }
+                        }
                         if(mCurrentFragment != mKpiFragment) {
                             showHideFragment(mCurrentFragment, mKpiFragment);
                             mCurrentFragment = mKpiFragment;
                         }
-                        return true;
+                        break;
                     case R.id.bottom_navigation_report:
+                        for(AuthorityObject obj : mAuthorityList) {
+                            if(obj.id.equals(AppConstants.ID_REPORT)) {
+                                if(obj.isShow.equals("0")) {
+                                    ToastUtils.showShort(R.string.no_authority);
+                                    return false;
+                                }
+                            }
+                        }
                         if(mCurrentFragment != mReportFragment) {
                             showHideFragment(mCurrentFragment, mReportFragment);
                             mCurrentFragment = mReportFragment;
                         }
-                        return true;
+                        break;
                 }
-                return false;
+                return true;
             }
         });
 

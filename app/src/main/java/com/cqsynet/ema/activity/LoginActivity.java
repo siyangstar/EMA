@@ -159,6 +159,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             ToastUtils.showShort(responseObj.message);
                         }
