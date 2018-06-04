@@ -28,14 +28,14 @@ public class AppConstants {
     public static final String URL_GET_REPORT_LOCATION = "/eam/phone/getAllWz"; //获取所有报修位置
     public static final String URL_GET_REPORT_TYPE = "/eam/phone/getAllZl"; //获取所有报修类型
     public static final String URL_GET_REPORT_APPEARANCE = "/eam/phone/getGzXx"; //获取所有故障现象
-    public static final String URL_GET_EQUIPMENT = "/eam/phone/getSb"; //获取设备列表
+    public static final String URL_GET_DEVICE = "/eam/phone/getSb"; //获取设备列表
     public static final String URL_SUBMIT_REPORT = "/eam/phone/baoxiu"; //新增报修
-    public static final String URL_GET_TODO_LIST = "/eam/phone/getBxGd"; //获取工单列表
+    public static final String URL_GET_WORK_ORDER = "/eam/phone/getBxGd"; //获取工单列表
 
     public static final String TAG_PATROL = "patrol";
     public static final String TAG_WORK_ORDER = "workOrder";
     public static final String TAG_KPI = "kpi";
-    public static final String TAG_REPAIR = "report";
+    public static final String TAG_REPORT = "report";
     public static final String TAG_TODO_LIST = "todoList";
 
     public static final String RET_OK = "0";
@@ -54,8 +54,9 @@ public class AppConstants {
             put(ID_TODO_LIST, R.drawable.home_todolist);
         }
     };
-
+    //字典表类型
     public static final String DICTIONARY_TYPE_WORKORDER_PRIORITY = "gd_yxj"; //字典表类型:工单优先级
     public static final String DICTIONARY_TYPE_WORKORDER_STATUS = "gd_zt"; //字典表类型:工单状态
+
 
 }

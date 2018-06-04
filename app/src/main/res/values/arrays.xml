@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="equipment_sort">
+    <string-array name="device_sort">
         <item>设备编码</item>
         <item>设备位置</item>
         <item>设备描述</item>
@@ -15,5 +15,16 @@
         <item>创建日期</item>
         <item>责任人</item>
         <item>部门</item>
+    </string-array>
+
+    <string-array name="workorder_sort_value">
+        <item>GD_BM</item>
+        <item>GD_ZT</item>
+        <item>GD_MS</item>
+        <item>ZC_MS</item>
+        <item>WZ_MS</item>
+        <item>CREATE_DATE</item>
+        <item>USERNAME</item>
+        <item>BUMEN</item>
     </string-array>
 </resources>

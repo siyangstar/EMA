@@ -14,14 +14,20 @@
 
     <include layout="@layout/sort_filter"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:background="@color/bg_gray"/>
-
     <FrameLayout
-        android:id="@+id/flContainer_fragment_workorder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/flRecyclerView_fragment_workorder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <FrameLayout
+            android:id="@+id/flFilter_fragment_workorder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:visibility="gone"/>
+    </FrameLayout>
 </LinearLayout>

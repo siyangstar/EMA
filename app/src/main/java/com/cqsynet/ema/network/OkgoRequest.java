@@ -10,12 +10,16 @@
 package com.cqsynet.ema.network;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.cqsynet.ema.activity.LoginActivity;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.common.Globals;
+import com.cqsynet.ema.model.ResponseObject;
 import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -33,7 +37,7 @@ public class OkgoRequest {
      *
      * @param url
      */
-    public static void excute(Context context, String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
+    public static void excute(final Context context, String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
         if(Globals.DEBUG) {
             Gson gson = new Gson();
             String requestStr = gson.toJson(paramMap).toString();
@@ -70,13 +74,19 @@ public class OkgoRequest {
                                     Log.d(TAG, sub.trim());
                                 }
                             }
-//                            // 调用UI端的回调函数
-//                            Gson gson = new Gson();
-//                            ResponseObject object = gson.fromJson(msg, ResponseObject.class);
-//                            if(object.ret.equals("1") && object.msg.equals("session过期")) {
-//
-//                            }
+                            // 调用UI端的回调函数
+                            Gson gson = new Gson();
+                            ResponseObject object = gson.fromJson(msg, ResponseObject.class);
+                            if (object.ret.equals("1") && object.msg.equals("session过期")) {
+
+                            }
                             callbackIf.onResponse(msg);
+                        } catch (JsonSyntaxException e) {
+                            //注销当前用户,跳转到登录界面
+                            SharedPreferencesUtil.removeData(context, SharedPreferencesUtil.SEESION_ID);
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            context.startActivity(intent);
                         } catch (Exception e) {
                             callbackIf.onErrorResponse();
                             if (Globals.DEBUG) {

@@ -51,7 +51,7 @@
             android:background="@color/divider"/>
 
         <LinearLayout
-            android:id="@+id/llSelect_equipment_activity_submit_report"
+            android:id="@+id/llSelect_device_activity_submit_report"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:paddingLeft="16dp"
@@ -64,12 +64,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/select_equipment"
+                android:text="@string/select_device"
                 android:textColor="@color/text2"
                 android:textSize="@dimen/text_size_largex"/>
 
             <TextView
-                android:id="@+id/tvEquipment_activity_submit_report"
+                android:id="@+id/tvDevice_activity_submit_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"

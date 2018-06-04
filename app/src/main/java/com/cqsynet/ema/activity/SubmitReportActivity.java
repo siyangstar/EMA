@@ -34,7 +34,7 @@ import java.util.List;
 public class SubmitReportActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText mEtMessage;
-    private TextView mTvEquipment;
+    private TextView mTvDevice;
     private TextView mTvLocation;
     private TextView mTvPriority;
     private TextView mTvAppearance;
@@ -63,7 +63,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         ImageButton ibtnQuit = findViewById(R.id.ibtnLeft_titlebar);
         ImageButton ibtnScan = findViewById(R.id.ibtnRight_titlebar);
         mEtMessage = findViewById(R.id.etMessage_activity_submit_report);
-        mTvEquipment = findViewById(R.id.tvEquipment_activity_submit_report);
+        mTvDevice = findViewById(R.id.tvDevice_activity_submit_report);
         mTvLocation = findViewById(R.id.tvLocation_activity_submit_report);
         mTvPriority = findViewById(R.id.tvPriority_activity_submit_report);
         mTvAppearance = findViewById(R.id.tvAppearance_activity_submit_report);
@@ -78,14 +78,14 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         ibtnScan.setVisibility(View.VISIBLE);
         ibtnScan.setImageResource(R.drawable.scan);
         ibtnScan.setOnClickListener(this);
-        findViewById(R.id.llSelect_equipment_activity_submit_report).setOnClickListener(this);
+        findViewById(R.id.llSelect_device_activity_submit_report).setOnClickListener(this);
         findViewById(R.id.llPriority_activity_submit_report).setOnClickListener(this);
         findViewById(R.id.llAppearance_activity_submit_report).setOnClickListener(this);
 
         mImageList = new ArrayList<>();
         mImageList.add("");
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        mImageAdapter = new AddImageGridAdapter(R.layout.item_add_image_grid, mImageList);
+        mImageAdapter = new AddImageGridAdapter(R.layout.item_recycler_add_image_grid, mImageList);
         mRecyclerView.setAdapter(mImageAdapter);
         mImageAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -155,7 +155,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                     startActivityForResult(intent, REQUEST_CODE_SCAN);
                 }
                 break;
-            case R.id.llSelect_equipment_activity_submit_report:
+            case R.id.llSelect_device_activity_submit_report:
                 break;
             case R.id.llPriority_activity_submit_report:
                 break;

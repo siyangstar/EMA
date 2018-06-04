@@ -1,7 +1,6 @@
 package com.cqsynet.ema.fragment;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,25 +11,29 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.blankj.utilcode.util.ToastUtils;
 import com.cqsynet.ema.R;
+import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.model.MessageEvent;
 
 public class WorkOrderFragment extends BaseFragment implements View.OnClickListener {
 
-    private FrameLayout mFlContainer;
-    private Fragment mFilterFragment;
+    private FrameLayout mFlFilter;
+    private FilterFragment mFilterFragment;
+    private ListFragment mListFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_workorder, container, false);
         TextView tvTitle = view.findViewById(R.id.tvTitle_titlebar);
-        mFlContainer = view.findViewById(R.id.flContainer_fragment_workorder);
+        mFlFilter = view.findViewById(R.id.flFilter_fragment_workorder);
 
         tvTitle.setText(R.string.work_order);
         view.findViewById(R.id.tvSort_sort_filter).setOnClickListener(this);
         view.findViewById(R.id.tvFilter_sort_filter).setOnClickListener(this);
+
+        getFragmentManager().beginTransaction().add(R.id.flRecyclerView_fragment_workorder, mListFragment).commitAllowingStateLoss();
+        getFragmentManager().beginTransaction().add(R.id.flFilter_fragment_workorder, mFilterFragment).commitAllowingStateLoss();
 
         return view;
     }
@@ -40,6 +43,10 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         mFilterFragment = new FilterFragment();
+        mListFragment = new ListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("category", AppConstants.TAG_WORK_ORDER);
+        mListFragment.setArguments(bundle);
     }
 
     @Override
@@ -48,14 +55,15 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
             case R.id.tvSort_sort_filter:
                 new MaterialDialog.Builder(mContext)
                         .titleGravity(GravityEnum.CENTER)
-                        .title(R.string.equip_sort)
+                        .title(R.string.device_sort)
                         .dividerColorRes(R.color.divider)
                         .itemsGravity(GravityEnum.CENTER)
                         .items(R.array.workorder_sort)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                ToastUtils.showShort(text);
+                                String value = getResources().getStringArray(R.array.workorder_sort_value)[which];
+                                mListFragment.setOrderByParam(value);
                             }
                         })
                         .show();
@@ -75,9 +83,9 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
         Bundle bundle = messageEvent.getMessage();
         String type = bundle.getString("type");
         if(type.equals("cancelFilter")) {
-            mFlContainer.setVisibility(View.GONE);
+            mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
-            mFlContainer.setVisibility(View.GONE);
+            mFlFilter.setVisibility(View.GONE);
         }
     }
 
@@ -86,18 +94,12 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
      *
      */
     public <T extends Fragment> void switchFilter() {
-        if(mFlContainer.getVisibility() == View.VISIBLE) {
-            mFlContainer.setVisibility(View.GONE);
+        if(mFlFilter.getVisibility() == View.VISIBLE) {
+            mFlFilter.setVisibility(View.GONE);
         } else {
-            FragmentManager fm = getFragmentManager();
-            String tag = mFilterFragment.getClass().getSimpleName();
-            Fragment tempFragment = fm.findFragmentByTag(tag);
-            if(tempFragment == null) { // 存在则直接显示。
-                fm.beginTransaction()
-                        .add(R.id.flContainer_fragment_report, mFilterFragment, tag)
-                        .commitAllowingStateLoss();
-            }
-            mFlContainer.setVisibility(View.VISIBLE);
+            mFlFilter.setVisibility(View.VISIBLE);
         }
     }
+
+
 }

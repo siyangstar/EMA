@@ -94,7 +94,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.addItemDecoration(new GridDivider(this, 1, getResources().getColor(R.color.divider), 2));
-        HomeGridAdapter adapter = new HomeGridAdapter(R.layout.item_home_grid, mItemList);
+        HomeGridAdapter adapter = new HomeGridAdapter(R.layout.item_recycler_home_grid, mItemList);
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

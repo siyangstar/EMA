@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/bg_gray"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvOrderId_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_largex"
+            tools:text="24289423"/>
+
+        <TextView
+            android:id="@+id/tvStatus_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_gray_frame_background"
+            tools:text="已完成"/>
+
+        <TextView
+            android:id="@+id/tvOrderDesc_item_recycler_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOrderId_item_recycler_list"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_edittext_background"
+            android:maxLines="5"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_large"
+            tools:text="设备描述设备描述设备描述设备描述设备描述设备描述设备描述设备描述"/>
+
+        <TextView
+            android:id="@+id/tvDeviceId_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/tvOrderDesc_item_recycler_list"
+            android:drawableLeft="@drawable/device"
+            android:drawablePadding="8dp"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_large"
+            tools:text="4971979825"/>
+
+        <TextView
+            android:id="@+id/tvDeviceDesc_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/tvOrderDesc_item_recycler_list"
+            android:layout_toRightOf="@id/tvDeviceId_item_recycler_list"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_large"
+            tools:text="休息室空调"/>
+
+        <TextView
+            android:id="@+id/tvLocation_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/tvDeviceId_item_recycler_list"
+            android:drawableLeft="@drawable/location"
+            android:drawablePadding="8dp"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_large"
+            tools:text="大学城"/>
+
+        <TextView
+            android:id="@+id/tvDate_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/tvLocation_item_recycler_list"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_blue_background"
+            tools:text="2018-6-10"/>
+
+        <TextView
+            android:id="@+id/tvPerson_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/tvLocation_item_recycler_list"
+            android:layout_toRightOf="@id/tvDate_item_recycler_list"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_blue_background"
+            tools:text="张三"/>
+
+        <TextView
+            android:id="@+id/tvDepartment_item_recycler_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/tvLocation_item_recycler_list"
+            android:layout_toRightOf="@id/tvPerson_item_recycler_list"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_blue_background"
+            tools:text="维修部"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
