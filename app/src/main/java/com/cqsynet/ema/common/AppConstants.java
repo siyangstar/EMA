@@ -26,7 +26,7 @@ public class AppConstants {
     public static final String URL_LOGIN = "/login"; //登录
     public static final String URL_LOGOUT = "/logout"; //注销
     public static final String URL_GET_REPORT_LOCATION = "/eam/phone/getAllWz"; //获取所有报修位置
-    public static final String URL_GET_REPORT_TYPE = "/eam/phone/getAllZl"; //获取所有报修类型
+    public static final String URL_GET_SYSTEM_CATEGORY = "/eam/phone/getAllZl"; //获取所有系统分类
     public static final String URL_GET_REPORT_APPEARANCE = "/eam/phone/getGzXx"; //获取所有故障现象
     public static final String URL_GET_DEVICE = "/eam/phone/getSb"; //获取设备列表
     public static final String URL_SUBMIT_REPORT = "/eam/phone/baoxiu"; //新增报修

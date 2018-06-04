@@ -1,6 +1,6 @@
 package com.cqsynet.ema.model;
 
-public class SystemObject {
+public class SystemCategoryObject {
 
     public String ZL_MS; //名称
     public String ZL_BM; //编码

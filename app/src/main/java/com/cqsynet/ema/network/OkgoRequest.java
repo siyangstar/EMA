@@ -38,11 +38,16 @@ public class OkgoRequest {
      * @param url
      */
     public static void excute(final Context context, String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
+        final String requestUrl = url;
         if(Globals.DEBUG) {
-            Gson gson = new Gson();
-            String requestStr = gson.toJson(paramMap).toString();
-            Log.d(TAG, "请求:  ");
-            Log.d(TAG, requestStr.trim());
+            Log.d(TAG, "请求:  " + url);
+            if(paramMap != null) {
+                Gson gson = new Gson();
+                String requestStr = gson.toJson(paramMap).toString();
+                Log.d(TAG, requestStr.trim());
+            } else {
+                Log.d(TAG, "无特殊参数");
+            }
         }
         if(url.equals(AppConstants.URL_LOGIN)) {
             url = AppConstants.URL_MAIN + url;
@@ -57,7 +62,7 @@ public class OkgoRequest {
                         try {
                             String msg = response.body();
                             if (Globals.DEBUG) {
-                                Log.d(TAG, "响应:  ");
+                                Log.d(TAG, "响应:  " + requestUrl);
                                 msg = msg.trim();
                                 int index = 0;
                                 int maxLength = 4000;

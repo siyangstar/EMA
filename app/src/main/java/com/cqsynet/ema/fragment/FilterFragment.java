@@ -17,9 +17,11 @@ import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.FilterViewPagerAdapter;
 import com.cqsynet.ema.adapter.LocationRecyclerAdapter;
 import com.cqsynet.ema.adapter.SystemRecyclerAdapter;
+import com.cqsynet.ema.db.LocationDao;
+import com.cqsynet.ema.db.SystemCategoryDao;
 import com.cqsynet.ema.model.LocationObject;
 import com.cqsynet.ema.model.MessageEvent;
-import com.cqsynet.ema.model.SystemObject;
+import com.cqsynet.ema.model.SystemCategoryObject;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -36,9 +38,9 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
     private ArrayList<RecyclerView> mLocationRecyclerList;
     private ArrayList<RecyclerView> mSystemRecyclerList;
     private ArrayList<LocationObject> mLocationLevelOneList;
-    private ArrayList<SystemObject> mSystemLevelOneList;
+    private ArrayList<SystemCategoryObject> mSystemLevelOneList;
     private LocationObject mSelectedLocationObject; //选择的位置条件
-    private SystemObject mSelectedSystemObject;  //选择的系统条件
+    private SystemCategoryObject mSelectedSystemCategoryObject;  //选择的系统条件
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,22 +50,9 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         mSystemRecyclerList = new ArrayList<>();
 
         mLocationLevelOneList = new ArrayList<>();
-        for(int i = 0; i < 20; i++) {
-            LocationObject obj = new LocationObject();
-            obj.WZ_MS = "四川";
-            obj.WZ_BM = "00" + i;
-            obj.F_WZ_BM = "";
-            mLocationLevelOneList.add(obj);
-        }
-
+        mLocationLevelOneList.addAll(LocationDao.getInstance(mContext).queryLocation(""));
         mSystemLevelOneList = new ArrayList<>();
-        for(int i = 0; i < 20; i++) {
-            SystemObject obj = new SystemObject();
-            obj.ZL_MS = "路由器";
-            obj.ZL_BM = "00" + i;
-            obj.F_ZL_BM = "";
-            mSystemLevelOneList.add(obj);
-        }
+        mSystemLevelOneList.addAll(SystemCategoryDao.getInstance(mContext).querySystemCategory(""));
     }
 
     @Nullable
@@ -144,8 +133,10 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
                 LocationObject locationObject = (LocationObject) adapter.getItem(position);
                 if(locationObject != null) {
                     String parentId = locationObject.WZ_BM;
-                    ArrayList<LocationObject> locationList = getLocationList(parentId);
-                    updateLocationViewPager(locationList);
+                    ArrayList<LocationObject> locationList = LocationDao.getInstance(mContext).queryLocation(parentId);
+                    if(locationList.size() != 0) {
+                        updateLocationViewPager(locationList);
+                    }
                 }
             }
         });
@@ -176,7 +167,7 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
      * 更新位置viewPager里面的列表
      * @param list 某一层级的位置列表
      */
-    private void updateSystemViewPager(ArrayList<SystemObject> list) {
+    private void updateSystemViewPager(ArrayList<SystemCategoryObject> list) {
         SystemRecyclerAdapter adapter = new SystemRecyclerAdapter(R.layout.item_recycler_filter, list);
         final RecyclerView recyclerView = (RecyclerView) View.inflate(mContext, R.layout.filter_recycler_view, null);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -193,11 +184,13 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
                         break;
                     }
                 }
-                SystemObject systemObject = (SystemObject) adapter.getItem(position);
-                if(systemObject != null) {
-                    String parentId = systemObject.ZL_BM;
-                    ArrayList<SystemObject> systemList = getSystemList(parentId);
-                    updateSystemViewPager(systemList);
+                SystemCategoryObject systemCategoryObject = (SystemCategoryObject) adapter.getItem(position);
+                if(systemCategoryObject != null) {
+                    String parentId = systemCategoryObject.ZL_BM;
+                    ArrayList<SystemCategoryObject> systemList = SystemCategoryDao.getInstance(mContext).querySystemCategory(parentId);
+                    if(systemList.size() != 0) {
+                        updateSystemViewPager(systemList);
+                    }
                 }
             }
         });
@@ -205,15 +198,15 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 boolean isChecked = ((CheckBox) view).isChecked();
-                SystemObject systemObject = (SystemObject) adapter.getItem(position);
-                if(systemObject != null) {
+                SystemCategoryObject systemCategoryObject = (SystemCategoryObject) adapter.getItem(position);
+                if(systemCategoryObject != null) {
                     if (isChecked) {
-                        systemObject.selected = true;
-                        mSelectedSystemObject = systemObject;
+                        systemCategoryObject.selected = true;
+                        mSelectedSystemCategoryObject = systemCategoryObject;
                         updateCheckBox("system");
                     } else {
-                        systemObject.selected = false;
-                        mSelectedSystemObject = null;
+                        systemCategoryObject.selected = false;
+                        mSelectedSystemCategoryObject = null;
                     }
                 }
             }
@@ -222,40 +215,6 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         mSystemRecyclerList.add(recyclerView);
         mSystemPagerAdapter.notifyDataSetChanged();
         mVpSystem.setCurrentItem(mSystemPagerAdapter.getCount() - 1);
-    }
-
-    /**
-     * 查询位置列表
-     * @param parentId
-     * @return
-     */
-    private ArrayList<LocationObject> getLocationList(String parentId) {
-        ArrayList<LocationObject> locationList = new ArrayList<>();
-        for(int i = 0; i < 20; i++) {
-            LocationObject obj = new LocationObject();
-            obj.WZ_MS = "成都";
-            obj.WZ_BM = "00100" + i;
-            obj.F_WZ_BM = "001";
-            locationList.add(obj);
-        }
-        return locationList;
-    }
-
-    /**
-     * 查询系统列表
-     * @param parentId
-     * @return
-     */
-    private ArrayList<SystemObject> getSystemList(String parentId) {
-        ArrayList<SystemObject> systemList = new ArrayList<>();
-        for(int i = 0; i < 20; i++) {
-            SystemObject obj = new SystemObject();
-            obj.ZL_MS = "机柜";
-            obj.ZL_BM = "00100" + i;
-            obj.F_ZL_BM = "001";
-            systemList.add(obj);
-        }
-        return systemList;
     }
 
     /**
@@ -277,10 +236,10 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
         } else if(type.equals("system")) {
             for (RecyclerView recyclerView : mSystemRecyclerList) {
                 SystemRecyclerAdapter adapter = (SystemRecyclerAdapter)recyclerView.getAdapter();
-                List<SystemObject> list = adapter.getData();
-                for(SystemObject systemObject : list) {
-                    if(!systemObject.ZL_BM.equals(mSelectedSystemObject.ZL_BM)) {
-                        systemObject.selected = false;
+                List<SystemCategoryObject> list = adapter.getData();
+                for(SystemCategoryObject systemCategoryObject : list) {
+                    if(!systemCategoryObject.ZL_BM.equals(mSelectedSystemCategoryObject.ZL_BM)) {
+                        systemCategoryObject.selected = false;
                     }
                 }
                 adapter.notifyDataSetChanged();

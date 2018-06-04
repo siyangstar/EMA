@@ -19,6 +19,10 @@ public class SharedPreferencesUtil {
     public static final String EMA_PREFERENCES = "ema_data"; // shareinfo 名称
     public static final String SEESION_ID = "sessionId"; //会话session
     public static final String VERSION = "version"; // 上次退出时的版本号,用于判读是否新升级后的第一次打开app
+    public static final String UPDATE_DICTIONARY_DATE = "update_dict_date"; //字典数据更新时间
+    public static final String UPDATE_LOCATION_DATE = "update_location_date"; //位置数据更新时间
+    public static final String UPDATE_SYSTEM_CATEGORY_DATE = "update_system_category_date"; //系统分类数据更新时间
+
 
     /**
      * @param context

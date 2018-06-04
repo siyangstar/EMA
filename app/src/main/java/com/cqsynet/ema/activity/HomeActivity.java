@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.TimeConstants;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
@@ -15,9 +17,13 @@ import com.cqsynet.ema.adapter.HomeGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.db.AuthorityDao;
 import com.cqsynet.ema.db.DictionaryDao;
+import com.cqsynet.ema.db.LocationDao;
+import com.cqsynet.ema.db.SystemCategoryDao;
 import com.cqsynet.ema.model.AuthorityObject;
 import com.cqsynet.ema.model.DictionaryResponseObject;
 import com.cqsynet.ema.model.HomeGridObject;
+import com.cqsynet.ema.model.ReportLocationResponseObject;
+import com.cqsynet.ema.model.SystemCategoryResponseObject;
 import com.cqsynet.ema.network.OkgoRequest;
 import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.cqsynet.ema.view.GridDivider;
@@ -59,6 +65,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         initRecyclerView();
         updateDictionary();
+        updateReportLocation();
+        updateSystemCategory();
     }
 
     @Override
@@ -117,10 +125,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
      * 更新数据字典
      */
     private void updateDictionary() {
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) == 0) {
+        long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_DICTIONARY_DATE);
+        long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) == 0 || timeSpan > 24) {
             getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY);
         }
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) == 0) {
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) == 0 || timeSpan > 24) {
             getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS);
         }
     }
@@ -141,6 +151,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     DictionaryResponseObject responseObj = gson.fromJson(response, DictionaryResponseObject.class);
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_DICTIONARY_DATE, System.currentTimeMillis());
                             DictionaryDao.getInstance(HomeActivity.this).saveDictionary(responseObj.data.data);
                         } else {
                             ToastUtils.showShort(responseObj.msg);
@@ -158,11 +169,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    /**
+     * 退出登录
+     */
     private void logout() {
-        OkgoRequest.excute(this, AppConstants.URL_LOGOUT, new HashMap(), new OkgoRequest.IResponseCallback() {
+        OkgoRequest.excute(this, AppConstants.URL_LOGOUT, null, new OkgoRequest.IResponseCallback() {
             @Override
             public void onResponse(String response) {
                 SharedPreferencesUtil.removeData(HomeActivity.this, SharedPreferencesUtil.SEESION_ID);
+                finish();
             }
 
             @Override
@@ -171,5 +186,85 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    /**
+     * 更新报修位置
+     */
+    private void updateReportLocation() {
+        long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_LOCATION_DATE);
+        long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
+        if (LocationDao.getInstance(this).getCount() == 0 || timeSpan > 24) {
+            getReportLocation();
+        }
+    }
 
+    /**
+     * 从服务器获取报修位置
+     */
+    private void getReportLocation() {
+        OkgoRequest.excute(this, AppConstants.URL_GET_REPORT_LOCATION, null, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                   ReportLocationResponseObject responseObj = gson.fromJson(response, ReportLocationResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_LOCATION_DATE, System.currentTimeMillis());
+                            LocationDao.getInstance(HomeActivity.this).saveLocation(responseObj.data.data);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    } else {
+                        ToastUtils.showShort(R.string.request_failed);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.request_failed);
+            }
+        });
+    }
+
+    /**
+     * 更新系统分类
+     */
+    private void updateSystemCategory() {
+        long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_SYSTEM_CATEGORY_DATE);
+        long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
+        if (SystemCategoryDao.getInstance(this).getCount() == 0 || timeSpan > 24) {
+            getSystemCategory();
+        }
+    }
+
+    /**
+     * 从服务器获取系统分类
+     */
+    private void getSystemCategory() {
+        OkgoRequest.excute(this, AppConstants.URL_GET_SYSTEM_CATEGORY, null, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                    SystemCategoryResponseObject responseObj = gson.fromJson(response, SystemCategoryResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_SYSTEM_CATEGORY_DATE, System.currentTimeMillis());
+                            SystemCategoryDao.getInstance(HomeActivity.this).saveSystemCategory(responseObj.data.data);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    } else {
+                        ToastUtils.showShort(R.string.request_failed);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.request_failed);
+            }
+        });
+    }
 }
