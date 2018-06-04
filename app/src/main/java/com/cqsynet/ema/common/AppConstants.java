@@ -27,7 +27,7 @@ public class AppConstants {
     public static final String URL_LOGOUT = "/logout"; //注销
     public static final String URL_GET_REPORT_LOCATION = "/eam/phone/getAllWz"; //获取所有报修位置
     public static final String URL_GET_SYSTEM_CATEGORY = "/eam/phone/getAllZl"; //获取所有系统分类
-    public static final String URL_GET_REPORT_APPEARANCE = "/eam/phone/getGzXx"; //获取所有故障现象
+    public static final String URL_GET_ERROR_APPEARANCE = "/eam/phone/getGzXx"; //获取所有故障现象
     public static final String URL_GET_DEVICE = "/eam/phone/getSb"; //获取设备列表
     public static final String URL_SUBMIT_REPORT = "/eam/phone/baoxiu"; //新增报修
     public static final String URL_GET_WORK_ORDER = "/eam/phone/getBxGd"; //获取工单列表
@@ -58,5 +58,5 @@ public class AppConstants {
     public static final String DICTIONARY_TYPE_WORKORDER_PRIORITY = "gd_yxj"; //字典表类型:工单优先级
     public static final String DICTIONARY_TYPE_WORKORDER_STATUS = "gd_zt"; //字典表类型:工单状态
 
-
+    public static final long UPDATE_DATE_INTEVAL = 48; //更新数据的间隔时间,单位:小时
 }

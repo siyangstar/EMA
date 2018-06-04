@@ -22,6 +22,7 @@ public class SharedPreferencesUtil {
     public static final String UPDATE_DICTIONARY_DATE = "update_dict_date"; //字典数据更新时间
     public static final String UPDATE_LOCATION_DATE = "update_location_date"; //位置数据更新时间
     public static final String UPDATE_SYSTEM_CATEGORY_DATE = "update_system_category_date"; //系统分类数据更新时间
+    public static final String UPDATE_ERROR_APPEARANCE_DATE = "update_error_appearance_date"; //故障现象数据更新时间
 
 
     /**

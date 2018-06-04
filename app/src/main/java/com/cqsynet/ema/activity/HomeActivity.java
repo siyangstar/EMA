@@ -17,10 +17,12 @@ import com.cqsynet.ema.adapter.HomeGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.db.AuthorityDao;
 import com.cqsynet.ema.db.DictionaryDao;
+import com.cqsynet.ema.db.ErrorAppearanceDao;
 import com.cqsynet.ema.db.LocationDao;
 import com.cqsynet.ema.db.SystemCategoryDao;
 import com.cqsynet.ema.model.AuthorityObject;
 import com.cqsynet.ema.model.DictionaryResponseObject;
+import com.cqsynet.ema.model.ErrorAppearanceResponseObject;
 import com.cqsynet.ema.model.HomeGridObject;
 import com.cqsynet.ema.model.ReportLocationResponseObject;
 import com.cqsynet.ema.model.SystemCategoryResponseObject;
@@ -67,6 +69,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         updateDictionary();
         updateReportLocation();
         updateSystemCategory();
+        updateErrorAppearance();
     }
 
     @Override
@@ -122,15 +125,32 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
+     * 退出登录
+     */
+    private void logout() {
+        OkgoRequest.excute(this, AppConstants.URL_LOGOUT, null, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                SharedPreferencesUtil.removeData(HomeActivity.this, SharedPreferencesUtil.SEESION_ID);
+                finish();
+            }
+
+            @Override
+            public void onErrorResponse() {
+            }
+        });
+    }
+
+    /**
      * 更新数据字典
      */
     private void updateDictionary() {
         long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_DICTIONARY_DATE);
         long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) == 0 || timeSpan > 24) {
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
             getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY);
         }
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) == 0 || timeSpan > 24) {
+        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
             getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS);
         }
     }
@@ -170,29 +190,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * 退出登录
-     */
-    private void logout() {
-        OkgoRequest.excute(this, AppConstants.URL_LOGOUT, null, new OkgoRequest.IResponseCallback() {
-            @Override
-            public void onResponse(String response) {
-                SharedPreferencesUtil.removeData(HomeActivity.this, SharedPreferencesUtil.SEESION_ID);
-                finish();
-            }
-
-            @Override
-            public void onErrorResponse() {
-            }
-        });
-    }
-
-    /**
      * 更新报修位置
      */
     private void updateReportLocation() {
         long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_LOCATION_DATE);
         long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
-        if (LocationDao.getInstance(this).getCount() == 0 || timeSpan > 24) {
+        if (LocationDao.getInstance(this).getCount() == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
             getReportLocation();
         }
     }
@@ -233,7 +236,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private void updateSystemCategory() {
         long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_SYSTEM_CATEGORY_DATE);
         long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
-        if (SystemCategoryDao.getInstance(this).getCount() == 0 || timeSpan > 24) {
+        if (SystemCategoryDao.getInstance(this).getCount() == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
             getSystemCategory();
         }
     }
@@ -252,6 +255,47 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
                             SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_SYSTEM_CATEGORY_DATE, System.currentTimeMillis());
                             SystemCategoryDao.getInstance(HomeActivity.this).saveSystemCategory(responseObj.data.data);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    } else {
+                        ToastUtils.showShort(R.string.request_failed);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.request_failed);
+            }
+        });
+    }
+
+    /**
+     * 更新故障现象
+     */
+    private void updateErrorAppearance() {
+        long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_ERROR_APPEARANCE_DATE);
+        long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
+        if (ErrorAppearanceDao.getInstance(this).getCount() == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
+            getErrorAppearance();
+        }
+    }
+
+    /**
+     * 从服务器获取故障现象
+     */
+    private void getErrorAppearance() {
+        OkgoRequest.excute(this, AppConstants.URL_GET_ERROR_APPEARANCE, null, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                    ErrorAppearanceResponseObject responseObj = gson.fromJson(response, ErrorAppearanceResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_ERROR_APPEARANCE_DATE, System.currentTimeMillis());
+                            ErrorAppearanceDao.getInstance(HomeActivity.this).saveErrorAppearance(responseObj.data.data);
                         } else {
                             ToastUtils.showShort(responseObj.msg);
                         }

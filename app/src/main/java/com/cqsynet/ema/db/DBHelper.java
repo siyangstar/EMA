@@ -27,6 +27,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_LOCATION = "location";
     // 系统种类表名
     public static final String TABLE_SYSTEM_CATEGORY = "system_category";
+    // 故障现象表
+    public static final String TABLE_ERROR_APPEARANCE = "error_appearance";
 
     // 权限字段
     public static final String AUTHORITY_COL_ID = "id";
@@ -44,6 +46,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SYSTEM_CATEGORY_COL_ID = "id";
     public static final String SYSTEM_CATEGORY_COL_NAME = "name";
     public static final String SYSTEM_CATEGORY_COL_PARENT_ID = "pid";
+    // 故障现象字段
+    public static final String ERROR_APPEARANCE_COL_ID = "id";
+    public static final String ERROR_APPEARANCE_COL_DESCRIPTION = "description";
+
 
 
     // 创建权限表的语句
@@ -66,6 +72,10 @@ public class DBHelper extends SQLiteOpenHelper {
             + SYSTEM_CATEGORY_COL_ID + " TEXT PRIMARY KEY,"
             + SYSTEM_CATEGORY_COL_NAME + " TEXT,"
             + SYSTEM_CATEGORY_COL_PARENT_ID + " TEXT)";
+    // 创建故障现象表的语句
+    public static final String CREATE_TABLE_ERROR_APPEARANCE = "CREATE TABLE IF NOT EXISTS " + TABLE_ERROR_APPEARANCE + "("
+            + ERROR_APPEARANCE_COL_ID + " TEXT PRIMARY KEY,"
+            + ERROR_APPEARANCE_COL_DESCRIPTION + " TEXT)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -85,6 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + DBHelper.TABLE_DICTIONARY);
         db.execSQL("drop table if exists " + DBHelper.TABLE_LOCATION);
         db.execSQL("drop table if exists " + DBHelper.TABLE_SYSTEM_CATEGORY);
+        db.execSQL("drop table if exists " + DBHelper.TABLE_ERROR_APPEARANCE);
         createTable(db);
         db.close();
     }
@@ -94,5 +105,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_DICTIONARY);
         db.execSQL(CREATE_TABLE_LOCATION);
         db.execSQL(CREATE_TABLE_SYSTEM_CATEGORY);
+        db.execSQL(CREATE_TABLE_ERROR_APPEARANCE);
     }
 }
