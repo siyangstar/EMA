@@ -19,7 +19,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
 
     private FrameLayout mFlFilter;
     private FilterFragment mFilterFragment;
-    private ListFragment mListFragment;
+    private WorkOrderListFragment mListFragment;
 
     @Nullable
     @Override
@@ -43,7 +43,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         mFilterFragment = new FilterFragment();
-        mListFragment = new ListFragment();
+        mListFragment = new WorkOrderListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_WORK_ORDER);
         mListFragment.setArguments(bundle);
@@ -55,7 +55,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
             case R.id.tvSort_sort_filter:
                 new MaterialDialog.Builder(mContext)
                         .titleGravity(GravityEnum.CENTER)
-                        .title(R.string.device_sort)
+                        .title(R.string.sort)
                         .dividerColorRes(R.color.divider)
                         .itemsGravity(GravityEnum.CENTER)
                         .items(R.array.workorder_sort)

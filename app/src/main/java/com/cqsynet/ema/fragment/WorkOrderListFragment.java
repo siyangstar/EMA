@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
-import com.cqsynet.ema.adapter.ListAdapter;
+import com.cqsynet.ema.adapter.WorkOrderListAdapter;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.model.WorkOrderObject;
 import com.cqsynet.ema.model.WorkOrderResponseObject;
@@ -27,12 +27,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ListFragment extends BaseFragment {
+public class WorkOrderListFragment extends BaseFragment {
 
     private String mCategory;
     private SmartRefreshLayout mSmartRefreshLayout;
     private RecyclerView mRecyclerView;
-    private ListAdapter mListAdapter;
+    private WorkOrderListAdapter mListAdapter;
     private ArrayList<WorkOrderObject> mItemList;
     private int mNextPage;
     private String mOrderBy;
@@ -42,7 +42,7 @@ public class ListFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         mCategory = getArguments().getString("category");
         mItemList = new ArrayList<>();
-        mListAdapter = new ListAdapter(R.layout.item_recycler_list, mItemList);
+        mListAdapter = new WorkOrderListAdapter(R.layout.item_recycler_workorder_list, mItemList);
 
 //        for(int i = 0; i < 10; i++) {
 //            WorkOrderObject object = new WorkOrderObject();

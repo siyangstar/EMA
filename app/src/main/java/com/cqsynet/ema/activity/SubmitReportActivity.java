@@ -47,6 +47,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     private static int MAX_IMAGE_NUMBER = 6;
     private static int REQUEST_CODE_OPEN_GALLARY = 1;
     private static int REQUEST_CODE_SCAN = 2;
+    private static int REQUEST_CODE_DEVICE = 3;
     private boolean mHasPermission = false;
     private static String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -156,6 +157,8 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             case R.id.llSelect_device_activity_submit_report:
+                Intent intent = new Intent(SubmitReportActivity.this, DeviceListActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_DEVICE);
                 break;
             case R.id.llPriority_activity_submit_report:
                 break;
@@ -189,6 +192,8 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
             } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                 Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == REQUEST_CODE_DEVICE && resultCode == Activity.RESULT_OK && data != null) {
+
         }
     }
 

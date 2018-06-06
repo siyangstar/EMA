@@ -22,7 +22,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
 
     private FrameLayout mFlFilter;
     private FilterFragment mFilterFragment;
-    private ListFragment mListFragment;
+    private WorkOrderListFragment mListFragment;
 
     @Nullable
     @Override
@@ -51,7 +51,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
 
         mFilterFragment = new FilterFragment();
-        mListFragment = new ListFragment();
+        mListFragment = new WorkOrderListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_REPORT);
         mListFragment.setArguments(bundle);

@@ -6,6 +6,13 @@
         <item>管理部门</item>
     </string-array>
 
+    <string-array name="device_sort_value">
+        <item>ZC_BM</item>
+        <item>WZ_BM_DES</item>
+        <item>ZC_MS</item>
+        <item>GL_BM_DES</item>
+    </string-array>
+
     <string-array name="workorder_sort">
         <item>工单编码</item>
         <item>工单状态</item>
