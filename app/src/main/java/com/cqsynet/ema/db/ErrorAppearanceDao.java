@@ -9,6 +9,9 @@ import com.cqsynet.ema.model.ErrorAppearanceObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据库故障现象表的工具类
+ */
 public class ErrorAppearanceDao {
 
     private static ErrorAppearanceDao mInstance;

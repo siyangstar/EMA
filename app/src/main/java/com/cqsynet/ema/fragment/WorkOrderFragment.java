@@ -15,6 +15,9 @@ import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.model.MessageEvent;
 
+/**
+ * 工单模块
+ */
 public class WorkOrderFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlFilter;

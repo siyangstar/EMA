@@ -1,7 +1,7 @@
 package com.cqsynet.ema.model;
 
 /**
- * 获取工单列表接口返回类
+ * 工单列表接口返回对象
  */
 public class WorkOrderResponseObject extends ResponseObject {
 

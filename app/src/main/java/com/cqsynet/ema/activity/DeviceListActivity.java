@@ -1,6 +1,7 @@
 package com.cqsynet.ema.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
@@ -29,6 +30,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * 设备列表
+ */
 public class DeviceListActivity extends BaseActivity implements View.OnClickListener {
 
     private FrameLayout mFlFilter;
@@ -74,7 +78,13 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         mListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                DeviceObject deviceObject = mItemList.get(position);
+                Intent intent = new Intent();
+                intent.putExtra("deviceName", deviceObject.ZC_MS);
+                intent.putExtra("deviceId", deviceObject.ZC_BM);
+                intent.putExtra("deviceLocation", deviceObject.WZ_BM_DES);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

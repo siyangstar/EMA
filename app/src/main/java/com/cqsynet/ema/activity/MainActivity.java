@@ -22,6 +22,9 @@ import com.cqsynet.ema.view.BottomNavigationViewHelper;
 
 import java.util.ArrayList;
 
+/**
+ * 主Tab页
+ */
 public class MainActivity extends BaseActivity {
 
     private BottomNavigationView mBottomNavi;

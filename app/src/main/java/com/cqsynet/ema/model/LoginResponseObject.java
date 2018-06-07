@@ -3,7 +3,7 @@ package com.cqsynet.ema.model;
 import java.util.ArrayList;
 
 /**
- * 登录接口返回类
+ * 登录接口返回对象
  */
 public class LoginResponseObject extends ResponseObject {
 

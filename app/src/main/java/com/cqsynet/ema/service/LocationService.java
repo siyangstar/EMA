@@ -18,6 +18,9 @@ import com.baidu.location.LocationClientOption.LocationMode;
 import com.cqsynet.ema.common.Globals;
 import com.cqsynet.ema.util.SharedPreferencesUtil;
 
+/**
+ * 百度定位服务
+ */
 public class LocationService {
 	private LocationClient client = null;
 	private LocationClientOption mOption,DIYoption;

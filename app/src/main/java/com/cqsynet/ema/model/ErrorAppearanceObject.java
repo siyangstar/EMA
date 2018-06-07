@@ -1,5 +1,8 @@
 package com.cqsynet.ema.model;
 
+/**
+ * 故障现象对象
+ */
 public class ErrorAppearanceObject {
 
     public String gzdm_bm; //故障编码

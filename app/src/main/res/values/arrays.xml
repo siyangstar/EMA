@@ -34,4 +34,10 @@
         <item>USERNAME</item>
         <item>BUMEN</item>
     </string-array>
+
+    <string-array name="priority">
+        <item>高</item>
+        <item>中</item>
+        <item>低</item>
+    </string-array>
 </resources>

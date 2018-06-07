@@ -1,5 +1,8 @@
 package com.cqsynet.ema.model;
 
+/**
+ * 系统分类对象
+ */
 public class SystemCategoryObject {
 
     public String ZL_MS; //名称

@@ -36,6 +36,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * 首页
+ */
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private RecyclerView mRecyclerView;

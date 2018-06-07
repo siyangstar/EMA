@@ -7,6 +7,9 @@ import com.cqsynet.ema.model.WorkOrderObject;
 
 import java.util.List;
 
+/**
+ * 工单列表的适配器
+ */
 public class WorkOrderListAdapter extends BaseQuickAdapter<WorkOrderObject, BaseViewHolder> {
 
     public WorkOrderListAdapter(int layoutResId, List data) {

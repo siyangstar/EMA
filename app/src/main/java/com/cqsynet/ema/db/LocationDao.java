@@ -10,6 +10,9 @@ import com.cqsynet.ema.model.LocationObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据库位置表的工具类
+ */
 public class LocationDao {
 
     private static LocationDao mInstance;

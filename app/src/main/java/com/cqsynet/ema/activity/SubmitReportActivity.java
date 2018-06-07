@@ -2,10 +2,7 @@ package com.cqsynet.ema.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,24 +10,37 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.AddImageGridAdapter;
+import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.db.ErrorAppearanceDao;
+import com.cqsynet.ema.model.ErrorAppearanceObject;
+import com.cqsynet.ema.model.ResponseObject;
+import com.cqsynet.ema.network.OkgoRequest;
+import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * 提交报修
+ */
 public class SubmitReportActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText mEtMessage;
@@ -43,6 +53,9 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     private RecyclerView mRecyclerView;
     private ArrayList<String> mImageList;
     private AddImageGridAdapter mImageAdapter;
+    private ArrayList<ErrorAppearanceObject> mErrorAppearanceList;
+    private String mErrorAppearanceId;
+    private String mDeviceId;
     private int mImageClickPosition; //添加图片的位置
     private static int MAX_IMAGE_NUMBER = 6;
     private static int REQUEST_CODE_OPEN_GALLARY = 1;
@@ -82,6 +95,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.llSelect_device_activity_submit_report).setOnClickListener(this);
         findViewById(R.id.llPriority_activity_submit_report).setOnClickListener(this);
         findViewById(R.id.llAppearance_activity_submit_report).setOnClickListener(this);
+        findViewById(R.id.btnSubmit_activity_submit_report).setOnClickListener(this);
 
         mImageList = new ArrayList<>();
         mImageList.add("");
@@ -92,7 +106,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 mHasPermission = AndPermission.hasPermissions(SubmitReportActivity.this, PERMISSIONS);
-                if(!mHasPermission) {
+                if (!mHasPermission) {
                     AndPermission.with(SubmitReportActivity.this)
                             .runtime()
                             .permission(PERMISSIONS)
@@ -131,7 +145,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.ibtnRight_titlebar:
                 mHasPermission = AndPermission.hasPermissions(SubmitReportActivity.this, Manifest.permission.CAMERA);
-                if(!mHasPermission) {
+                if (!mHasPermission) {
                     AndPermission.with(SubmitReportActivity.this)
                             .runtime()
                             .permission(Manifest.permission.CAMERA)
@@ -161,8 +175,39 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 startActivityForResult(intent, REQUEST_CODE_DEVICE);
                 break;
             case R.id.llPriority_activity_submit_report:
+                new MaterialDialog.Builder(this)
+                        .title(R.string.priority)
+                        .dividerColorRes(R.color.divider)
+                        .items(R.array.priority)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                mTvPriority.setText(getResources().getStringArray(R.array.priority)[which]);
+                            }
+                        })
+                        .show();
                 break;
             case R.id.llAppearance_activity_submit_report:
+                mErrorAppearanceList = ErrorAppearanceDao.getInstance(SubmitReportActivity.this).queryErrorAppearance();
+                ArrayList<String> errorValueList = new ArrayList<>();
+                for (ErrorAppearanceObject errorAppearanceObject : mErrorAppearanceList) {
+                    errorValueList.add(errorAppearanceObject.gzdm_ms);
+                }
+                new MaterialDialog.Builder(this)
+                        .title(R.string.error_apprearance)
+                        .dividerColorRes(R.color.divider)
+                        .items(errorValueList)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                mTvAppearance.setText(mErrorAppearanceList.get(which).gzdm_ms);
+                                mErrorAppearanceId = mErrorAppearanceList.get(which).gzdm_bm;
+                            }
+                        })
+                        .show();
+                break;
+            case R.id.btnSubmit_activity_submit_report:
+                submitReport();
                 break;
         }
     }
@@ -193,15 +238,18 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == REQUEST_CODE_DEVICE && resultCode == Activity.RESULT_OK && data != null) {
-
+            mTvDevice.setText(data.getStringExtra("deviceName"));
+            mTvLocation.setText(data.getStringExtra("deviceLocation"));
+            mDeviceId = data.getStringExtra("deviceId");
         }
     }
 
     /**
      * 设置图片
+     *
      * @param imagePath
      */
-    private void setImage(String imagePath){
+    private void setImage(String imagePath) {
         mImageList.set(mImageClickPosition, imagePath);
         if (mImageAdapter.getItemCount() != MAX_IMAGE_NUMBER && mImageClickPosition == mImageAdapter.getItemCount() - 1) {
             mImageList.add("");
@@ -210,12 +258,49 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     }
 
     /**
-     * 检查是否有intent对应的activity
+     * 提交报修
      */
-    private boolean isIntentAvailable(Context context, Intent intent) {
-        PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> list = packageManager.queryIntentActivities(
-                intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
+    private void submitReport() {
+        if (TextUtils.isEmpty(mDeviceId)) {
+            ToastUtils.showShort("请选择设备");
+        } else if (TextUtils.isEmpty(mTvPriority.getText().toString().trim())) {
+            ToastUtils.showShort("请选择优先级");
+        } else if (TextUtils.isEmpty(mErrorAppearanceId)) {
+            ToastUtils.showShort("请选择故障现象");
+        }
+        mProgressDialog.setMessage(getString(R.string.logining));
+        mProgressDialog.show();
+
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("gdMs", mEtMessage.getText().toString().trim());
+        paramMap.put("sbBm", mDeviceId);
+        paramMap.put("yxj", mTvPriority.getText().toString().trim());
+        paramMap.put("gzxxBm", mErrorAppearanceId);
+        paramMap.put("bgr", mTvPerson.getText().toString().trim());
+        paramMap.put("imgList", "");
+
+        OkgoRequest.excute(this, AppConstants.URL_SUBMIT_REPORT, paramMap, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                mProgressDialog.dismiss();
+                if (response != null) {
+                    Gson gson = new Gson();
+                    ResponseObject responseObj = gson.fromJson(response, ResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            ToastUtils.showShort(R.string.submit_success);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.submit_failed);
+                mProgressDialog.dismiss();
+            }
+        });
     }
 }

@@ -10,6 +10,9 @@ import com.cqsynet.ema.model.SystemCategoryObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据库系统分类表的工具类
+ */
 public class SystemCategoryDao {
 
     private static SystemCategoryDao mInstance;

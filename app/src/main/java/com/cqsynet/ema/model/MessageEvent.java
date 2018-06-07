@@ -2,6 +2,9 @@ package com.cqsynet.ema.model;
 
 import android.os.Bundle;
 
+/**
+ * EventBus消息类
+ */
 public class MessageEvent {
 
     private Bundle mBundle;

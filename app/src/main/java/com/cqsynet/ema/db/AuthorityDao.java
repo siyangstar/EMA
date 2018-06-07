@@ -9,6 +9,9 @@ import com.cqsynet.ema.model.AuthorityObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据库权限表的工具类
+ */
 public class AuthorityDao {
 
     private static AuthorityDao mInstance;

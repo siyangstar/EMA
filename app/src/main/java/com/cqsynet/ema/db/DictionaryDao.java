@@ -9,6 +9,9 @@ import com.cqsynet.ema.model.DictionaryObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据库字典表的工具类
+ */
 public class DictionaryDao {
 
     private static DictionaryDao mInstance;

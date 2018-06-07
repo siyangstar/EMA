@@ -1,5 +1,8 @@
 package com.cqsynet.ema.model;
 
+/**
+ * 地点位置对象
+ */
 public class LocationObject {
 
     public String WZ_MS; //名称

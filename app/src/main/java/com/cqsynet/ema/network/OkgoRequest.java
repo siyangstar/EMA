@@ -28,6 +28,9 @@ import org.json.JSONException;
 
 import java.util.Map;
 
+/**
+ * http网络请求类
+ */
 public class OkgoRequest {
 
     public static final String TAG = "EMARequest";

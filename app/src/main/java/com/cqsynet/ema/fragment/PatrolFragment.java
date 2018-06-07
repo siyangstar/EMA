@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.cqsynet.ema.R;
 
+/**
+ * 巡检模块
+ */
 public class PatrolFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlContainer;

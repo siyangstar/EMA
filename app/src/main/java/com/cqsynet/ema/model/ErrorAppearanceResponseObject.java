@@ -3,7 +3,7 @@ package com.cqsynet.ema.model;
 import java.util.ArrayList;
 
 /**
- * 获取故障现象接口返回类
+ * 故障现象接口返回对象
  */
 public class ErrorAppearanceResponseObject extends ResponseObject {
 

@@ -18,6 +18,9 @@ import com.cqsynet.ema.activity.SubmitReportActivity;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.model.MessageEvent;
 
+/**
+ * 报修模块
+ */
 public class ReportFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlFilter;

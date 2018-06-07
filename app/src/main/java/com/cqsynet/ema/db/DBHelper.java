@@ -1,18 +1,12 @@
-/*
- * Copyright (C) 2014 重庆尚渝
- * 版权所有
- *
- * 功能描述：数据库工具类
- *
- *
- * 创建标识：zhaosy 20140823
- */
 package com.cqsynet.ema.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * 数据库工具类
+ */
 public class DBHelper extends SQLiteOpenHelper {
 
     // 数据库名

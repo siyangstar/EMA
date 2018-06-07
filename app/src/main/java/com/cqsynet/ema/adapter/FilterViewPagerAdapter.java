@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+/**
+ * 筛选界面的viewPager适配器
+ */
 public class FilterViewPagerAdapter extends PagerAdapter {
 
     private List<RecyclerView> mViewList;

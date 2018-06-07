@@ -1,7 +1,7 @@
 package com.cqsynet.ema.model;
 
 /**
- * 获取设备列表接口返回类
+ * 设备列表接口返回对象
  */
 public class DeviceListResponseObject extends ResponseObject {
 

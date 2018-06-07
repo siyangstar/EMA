@@ -1,5 +1,8 @@
 package com.cqsynet.ema.model;
 
+/**
+ * 设备对象
+ */
 public class DeviceObject {
 
     public String ZC_ZT_DES; //资产状态描述

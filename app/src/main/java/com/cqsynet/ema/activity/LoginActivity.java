@@ -23,8 +23,9 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 
-;
-
+/**
+ * 登录
+ */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private TextInputLayout mTilUsername;

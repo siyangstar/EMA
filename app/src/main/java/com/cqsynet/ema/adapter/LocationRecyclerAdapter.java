@@ -7,6 +7,9 @@ import com.cqsynet.ema.model.LocationObject;
 
 import java.util.List;
 
+/**
+ * 筛选界面中位置列表的适配器
+ */
 public class LocationRecyclerAdapter extends BaseQuickAdapter<LocationObject, BaseViewHolder> {
 
     public LocationRecyclerAdapter(int layoutResId, List data) {

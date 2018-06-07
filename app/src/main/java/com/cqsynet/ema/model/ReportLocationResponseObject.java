@@ -3,7 +3,7 @@ package com.cqsynet.ema.model;
 import java.util.ArrayList;
 
 /**
- * 获取报修位置接口返回类
+ * 报修位置接口返回对象
  */
 public class ReportLocationResponseObject extends ResponseObject {
 

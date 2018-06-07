@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import com.cqsynet.ema.R;
 
+/**
+ * 忘记密码
+ */
 public class ForgetPswActivity extends BaseActivity implements View.OnClickListener {
 
     @Override

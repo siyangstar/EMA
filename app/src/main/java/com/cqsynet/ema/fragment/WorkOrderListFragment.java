@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 列表模块(工单列表,报修列表共用)
+ */
 public class WorkOrderListFragment extends BaseFragment {
 
     private String mCategory;

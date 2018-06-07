@@ -11,6 +11,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+/**
+ * Fragment基类
+ */
 public class BaseFragment extends Fragment {
 
     public Context mContext;

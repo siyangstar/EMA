@@ -15,6 +15,9 @@ import android.content.SharedPreferences.Editor;
 
 import java.util.Set;
 
+/**
+ * SharedPreferences工具类
+ */
 public class SharedPreferencesUtil {
     public static final String EMA_PREFERENCES = "ema_data"; // shareinfo 名称
     public static final String SEESION_ID = "sessionId"; //会话session

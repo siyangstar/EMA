@@ -3,7 +3,7 @@ package com.cqsynet.ema.model;
 import java.util.ArrayList;
 
 /**
- * 获取字典表接口返回类
+ * 字典表接口返回对象
  */
 public class DictionaryResponseObject extends ResponseObject {
 

@@ -11,6 +11,9 @@ import com.cqsynet.swifi.GlideApp;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * 提交报修时选择图片的适配器
+ */
 public class AddImageGridAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     public AddImageGridAdapter(int layoutResId, ArrayList<String> data) {

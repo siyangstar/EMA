@@ -28,6 +28,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 筛选模块
+ */
 public class FilterFragment extends BaseFragment implements View.OnClickListener {
 
     private RadioGroup mRadioGroup;

@@ -7,6 +7,9 @@ import com.cqsynet.ema.model.HomeGridObject;
 
 import java.util.List;
 
+/**
+ * 首页表格的适配器
+ */
 public class HomeGridAdapter extends BaseQuickAdapter<HomeGridObject, BaseViewHolder> {
 
     public HomeGridAdapter(int layoutResId, List data) {

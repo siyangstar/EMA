@@ -1,5 +1,8 @@
 package com.cqsynet.ema.model;
 
+/**
+ * 首页模块对象
+ */
 public class HomeGridObject {
     public String id;
     public String title;

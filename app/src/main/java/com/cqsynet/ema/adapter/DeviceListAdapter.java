@@ -7,6 +7,9 @@ import com.cqsynet.ema.model.DeviceObject;
 
 import java.util.List;
 
+/**
+ * 设备列表的适配器
+ */
 public class DeviceListAdapter extends BaseQuickAdapter<DeviceObject, BaseViewHolder> {
 
     public DeviceListAdapter(int layoutResId, List data) {
