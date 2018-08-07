@@ -101,7 +101,7 @@
         android:layout_margin="32dp"
         android:backgroundTint="@color/colorAccent"
         android:padding="16dp"
-        android:text="@string/login"
+        android:text="@string/submit"
         android:textColor="@android:color/white"/>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.blankj.utilcode.constant.TimeConstants;
@@ -15,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.HomeGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.common.Globals;
 import com.cqsynet.ema.db.AuthorityDao;
 import com.cqsynet.ema.db.DictionaryDao;
 import com.cqsynet.ema.db.ErrorAppearanceDao;
@@ -26,6 +28,7 @@ import com.cqsynet.ema.model.ErrorAppearanceResponseObject;
 import com.cqsynet.ema.model.HomeGridObject;
 import com.cqsynet.ema.model.ReportLocationResponseObject;
 import com.cqsynet.ema.model.SystemCategoryResponseObject;
+import com.cqsynet.ema.model.UserResponseObject;
 import com.cqsynet.ema.network.OkgoRequest;
 import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.cqsynet.ema.view.GridDivider;
@@ -60,27 +63,29 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_home);
 
         TextView tvTitle = findViewById(R.id.tvTitle_titlebar);
-        TextView tvLogout = findViewById(R.id.tvRight_titlebar);
+        ImageButton iBtnSetting = findViewById(R.id.ibtnLeft_titlebar);
         mRecyclerView = findViewById(R.id.recyclerview_activity_main);
 
         tvTitle.setText(R.string.home);
-        tvLogout.setVisibility(View.VISIBLE);
-        tvLogout.setText(R.string.quit);
-        tvLogout.setOnClickListener(this);
+        iBtnSetting.setVisibility(View.VISIBLE);
+        iBtnSetting.setImageResource(R.drawable.user_center);
+        iBtnSetting.setOnClickListener(this);
 
         initRecyclerView();
         updateDictionary();
         updateReportLocation();
         updateSystemCategory();
         updateErrorAppearance();
+        getUserDepartment();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvRight_titlebar:
-                logout();
-                onBackPressed();
+            case R.id.ibtnLeft_titlebar:
+                Intent intent = new Intent();
+                intent.setClass(this, UserCenterActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -94,15 +99,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         Iterator<AuthorityObject> iter = list.iterator();
         while (iter.hasNext()) {
             AuthorityObject author = iter.next();
-            if(author.id.equals("3da97fde4f2443b180bc9c1e9237d766")) {
-                //跳过"首页"
-                continue;
-            }
             HomeGridObject obj = new HomeGridObject();
             obj.id = author.id;
             obj.title = author.name;
             obj.imageRes = AppConstants.ICON_MAP.get(author.id);
-            obj.isShow = author.isShow;
+            obj.authority = author.authority;
             mItemList.add(obj);
         }
 
@@ -114,8 +115,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeGridObject object = mItemList.get(position);
-                if(object.isShow.equals("0")) {
+                if(object.authority.equals("0")) {
                     ToastUtils.showShort(R.string.no_authority);
+                } else if(object.id.equals(AppConstants.ID_TODO_LIST)) {
+
                 } else {
                     Intent intent = new Intent();
                     intent.setClass(HomeActivity.this, MainActivity.class);
@@ -128,44 +131,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * 退出登录
-     */
-    private void logout() {
-        OkgoRequest.excute(this, AppConstants.URL_LOGOUT, null, new OkgoRequest.IResponseCallback() {
-            @Override
-            public void onResponse(String response) {
-                SharedPreferencesUtil.removeData(HomeActivity.this, SharedPreferencesUtil.SEESION_ID);
-                finish();
-            }
-
-            @Override
-            public void onErrorResponse() {
-            }
-        });
-    }
-
-    /**
      * 更新数据字典
      */
     private void updateDictionary() {
         long lastUpdateDate = SharedPreferencesUtil.getTagLong(this, SharedPreferencesUtil.UPDATE_DICTIONARY_DATE);
         long timeSpan = TimeUtils.getTimeSpan(lastUpdateDate, System.currentTimeMillis(), TimeConstants.HOUR);
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY) == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
-            getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_PRIORITY);
-        }
-        if(DictionaryDao.getInstance(this).getCount(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS) == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
-            getDictionary(AppConstants.DICTIONARY_TYPE_WORKORDER_STATUS);
+        if(DictionaryDao.getInstance(this).getCount() == 0 || timeSpan > AppConstants.UPDATE_DATE_INTEVAL) {
+            getDictionary();
         }
     }
 
     /**
      * 从服务器获取字典表数据
      *
-     * @param type 类型
      */
-    private void getDictionary(String type) {
+    private void getDictionary() {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("type", type);
         OkgoRequest.excute(this, AppConstants.URL_DICTIONARY, paramMap, new OkgoRequest.IResponseCallback() {
             @Override
             public void onResponse(String response) {
@@ -175,7 +156,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
                             SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_DICTIONARY_DATE, System.currentTimeMillis());
-                            DictionaryDao.getInstance(HomeActivity.this).saveDictionary(responseObj.data.data);
+                            DictionaryDao.getInstance(HomeActivity.this).saveDictionary(responseObj.data);
                         } else {
                             ToastUtils.showShort(responseObj.msg);
                         }
@@ -299,6 +280,35 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
                             SharedPreferencesUtil.setTagLong(HomeActivity.this, SharedPreferencesUtil.UPDATE_ERROR_APPEARANCE_DATE, System.currentTimeMillis());
                             ErrorAppearanceDao.getInstance(HomeActivity.this).saveErrorAppearance(responseObj.data.data);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    } else {
+                        ToastUtils.showShort(R.string.request_failed);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.request_failed);
+            }
+        });
+    }
+
+    /**
+     * 从服务器获取用户部门
+     */
+    private void getUserDepartment() {
+        OkgoRequest.excute(this, AppConstants.URL_GET_USER_DEPARTMENT, null, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                    UserResponseObject responseObj = gson.fromJson(response, UserResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            Globals.g_UserInfo = responseObj.data.data;
                         } else {
                             ToastUtils.showShort(responseObj.msg);
                         }

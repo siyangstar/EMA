@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // 权限字段
     public static final String AUTHORITY_COL_ID = "id";
     public static final String AUTHORITY_COL_NAME = "name";
-    public static final String AUTHORITY_COL_IS_SHOW = "isShow";
+    public static final String AUTHORITY_COL_AUTHORITY = "authority";
     // 字典字段
     public static final String DICTIONARY_COL_ID = "id";
     public static final String DICTIONARY_COL_TYPE = "type";
@@ -50,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_AUTHORITY = "CREATE TABLE IF NOT EXISTS " + TABLE_AUTHORITY + "("
             + AUTHORITY_COL_ID + " TEXT PRIMARY KEY,"
             + AUTHORITY_COL_NAME + " TEXT,"
-            + AUTHORITY_COL_IS_SHOW + " TEXT)";
+            + AUTHORITY_COL_AUTHORITY + " TEXT)";
     // 创建字典表的语句
     public static final String CREATE_TABLE_DICTIONARY = "CREATE TABLE IF NOT EXISTS " + TABLE_DICTIONARY + "("
             + DICTIONARY_COL_ID + " TEXT PRIMARY KEY,"

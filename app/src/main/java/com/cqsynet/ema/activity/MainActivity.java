@@ -14,7 +14,7 @@ import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.db.AuthorityDao;
 import com.cqsynet.ema.fragment.KpiFragment;
-import com.cqsynet.ema.fragment.PatrolFragment;
+import com.cqsynet.ema.fragment.AssetFragment;
 import com.cqsynet.ema.fragment.ReportFragment;
 import com.cqsynet.ema.fragment.WorkOrderFragment;
 import com.cqsynet.ema.model.AuthorityObject;
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
 
     private BottomNavigationView mBottomNavi;
     private Fragment mCurrentFragment;
-    private Fragment mPatrolFragment;
+    private Fragment mAssetFragment;
     private Fragment mWorkOrderFragment;
     private Fragment mKpiFragment;
     private Fragment mReportFragment;
@@ -60,18 +60,18 @@ public class MainActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                         break;
-                    case R.id.bottom_navigation_patrol:
+                    case R.id.bottom_navigation_asset:
                         for(AuthorityObject obj : mAuthorityList) {
-                            if(obj.id.equals(AppConstants.ID_PATROL)) {
-                                if(obj.isShow.equals("0")) {
+                            if(obj.id.equals(AppConstants.ID_ASSET)) {
+                                if(obj.authority.equals("0")) {
                                     ToastUtils.showShort(R.string.no_authority);
                                     return false;
                                 }
                             }
                         }
-                        if(mCurrentFragment != mPatrolFragment) {
-                            showHideFragment(mCurrentFragment, mPatrolFragment);
-                            mCurrentFragment = mPatrolFragment;
+                        if(mCurrentFragment != mAssetFragment) {
+                            showHideFragment(mCurrentFragment, mAssetFragment);
+                            mCurrentFragment = mAssetFragment;
                         }
                         break;
                     case R.id.bottom_navigation_workorder:
@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity {
                     case R.id.bottom_navigation_kpi:
                         for(AuthorityObject obj : mAuthorityList) {
                             if(obj.id.equals(AppConstants.ID_KPI)) {
-                                if(obj.isShow.equals("0")) {
+                                if(obj.authority.equals("0")) {
                                     ToastUtils.showShort(R.string.no_authority);
                                     return false;
                                 }
@@ -125,14 +125,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initFragment() {
-        mPatrolFragment = new PatrolFragment();
+        mAssetFragment = new AssetFragment();
         mWorkOrderFragment = new WorkOrderFragment();
         mKpiFragment = new KpiFragment();
         mReportFragment = new ReportFragment();
 
-        if(AppConstants.ID_PATROL.equals(mId)) {
-            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_patrol);
-            mCurrentFragment = mPatrolFragment;
+        if(AppConstants.ID_ASSET.equals(mId)) {
+            mBottomNavi.setSelectedItemId(R.id.bottom_navigation_asset);
+            mCurrentFragment = mAssetFragment;
         } else if (AppConstants.ID_WORKORDER.equals(mId)) {
             mBottomNavi.setSelectedItemId(R.id.bottom_navigation_workorder);
             mCurrentFragment = mWorkOrderFragment;

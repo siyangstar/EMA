@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * 筛选模块
  */
-public class FilterFragment extends BaseFragment implements View.OnClickListener {
+public class EquipmentFilterFragment extends BaseFragment implements View.OnClickListener {
 
     private RadioGroup mRadioGroup;
     private ViewPager mVpLocation;
@@ -61,23 +61,23 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_filter, container, false);
-        mRadioGroup = view.findViewById(R.id.rg_fragment_filter);
-        mVpLocation = view.findViewById(R.id.vpLocation_fragment_filter);
-        mVpSystem = view.findViewById(R.id.vpSystem_fragment_filter);
+        View view = inflater.inflate(R.layout.fragment_equipment_filter, container, false);
+        mRadioGroup = view.findViewById(R.id.rg_fragment_equipment_filter);
+        mVpLocation = view.findViewById(R.id.vpLocation_fragment_equipment_filter);
+        mVpSystem = view.findViewById(R.id.vpSystem_fragment_equipment_filter);
 
-        view.findViewById(R.id.btnCancel_fragment_filter).setOnClickListener(this);
-        view.findViewById(R.id.btnConfirm_fragment_filter).setOnClickListener(this);
+        view.findViewById(R.id.btnCancel_fragment_equipment_filter).setOnClickListener(this);
+        view.findViewById(R.id.btnConfirm_fragment_equipment_filter).setOnClickListener(this);
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rbLocation_fragment_filter:
+                    case R.id.rbLocation_fragment_equipment_filter:
                         mVpLocation.setVisibility(View.VISIBLE);
                         mVpSystem.setVisibility(View.GONE);
                         break;
-                    case R.id.rbSystem_fragment_filter:
+                    case R.id.rbSystem_fragment_equipment_filter:
                         mVpLocation.setVisibility(View.GONE);
                         mVpSystem.setVisibility(View.VISIBLE);
                         break;
@@ -99,12 +99,12 @@ public class FilterFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnCancel_fragment_filter:
+            case R.id.btnCancel_fragment_equipment_filter:
                 Bundle bundleCancel = new Bundle();
                 bundleCancel.putString("type", "cancelFilter");
                 EventBus.getDefault().post(new MessageEvent(bundleCancel));
                 break;
-            case R.id.btnConfirm_fragment_filter:
+            case R.id.btnConfirm_fragment_equipment_filter:
                 Bundle bundleConfirm = new Bundle();
                 bundleConfirm.putString("type", "confirmFilter");
                 EventBus.getDefault().post(new MessageEvent(bundleConfirm));

@@ -134,7 +134,6 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         });
-
     }
 
     @Override

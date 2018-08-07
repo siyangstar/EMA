@@ -12,6 +12,7 @@ public class LoginResponseObject extends ResponseObject {
     public class DataObject {
         public String sessionid;
         public ArrayList<AuthorityObject> power;
+        public ArrayList<AuthorityObject> allPower;
     }
 
 }

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/smart_refresh_layout_fragment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,6 +19,6 @@
             android:overScrollMode="never"
             android:scrollbars="none"/>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

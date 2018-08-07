@@ -25,14 +25,14 @@
     </string-array>
 
     <string-array name="workorder_sort_value">
-        <item>GD_BM</item>
-        <item>GD_ZT</item>
-        <item>GD_MS</item>
-        <item>ZC_MS</item>
-        <item>WZ_MS</item>
-        <item>CREATE_DATE</item>
-        <item>USERNAME</item>
-        <item>BUMEN</item>
+        <item>a.gdBm</item>
+        <item>a.lcZt</item>
+        <item>a.gdMs</item>
+        <item>a.sbBmDes</item>
+        <item>a.wzBmDes</item>
+        <item></item>
+        <item>a.bxr</item>
+        <item>a.bmBmDes</item>
     </string-array>
 
     <string-array name="priority">

@@ -7,9 +7,9 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/bottom_navigation_patrol"
-        android:icon="@drawable/tab_patrol_normal"
-        android:title="@string/patrol" />
+        android:id="@+id/bottom_navigation_asset"
+        android:icon="@drawable/tab_asset_normal"
+        android:title="@string/asset" />
 
     <item
         android:id="@+id/bottom_navigation_workorder"

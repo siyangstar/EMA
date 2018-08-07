@@ -15,7 +15,7 @@
     <include layout="@layout/sort_filter"/>
 
     <FrameLayout
-        android:id="@+id/flContainer_fragment_patrol"
+        android:id="@+id/flContainer_fragment_asset"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

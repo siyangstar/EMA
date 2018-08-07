@@ -13,18 +13,18 @@ import com.cqsynet.ema.R;
 /**
  * 巡检模块
  */
-public class PatrolFragment extends BaseFragment implements View.OnClickListener {
+public class AssetFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlContainer;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patrol, container, false);
+        View view = inflater.inflate(R.layout.fragment_asset, container, false);
         TextView tvTitle = view.findViewById(R.id.tvTitle_titlebar);
-        mFlContainer = view.findViewById(R.id.flContainer_fragment_patrol);
+        mFlContainer = view.findViewById(R.id.flContainer_fragment_asset);
 
-        tvTitle.setText(R.string.patrol);
+        tvTitle.setText(R.string.asset);
 
         return view;
     }

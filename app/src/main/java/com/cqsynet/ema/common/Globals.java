@@ -10,9 +10,10 @@
 package com.cqsynet.ema.common;
 
 import com.cqsynet.ema.BuildConfig;
+import com.cqsynet.ema.model.UserObject;
 
 public class Globals {
     public static final boolean DEBUG = BuildConfig.DEBUG;
-    
+    public static UserObject g_UserInfo;
 
 }

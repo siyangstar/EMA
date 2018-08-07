@@ -42,7 +42,7 @@ public class AuthorityDao {
             ContentValues contentValues = new ContentValues();
             contentValues.put(DBHelper.AUTHORITY_COL_ID, object.id);
             contentValues.put(DBHelper.AUTHORITY_COL_NAME, object.name);
-            contentValues.put(DBHelper.AUTHORITY_COL_IS_SHOW, object.isShow);
+            contentValues.put(DBHelper.AUTHORITY_COL_AUTHORITY, object.authority);
             db.getWritableDatabase().insert(DBHelper.TABLE_AUTHORITY, null, contentValues);
         }
         db.close();
@@ -61,7 +61,7 @@ public class AuthorityDao {
                 AuthorityObject obj = new AuthorityObject();
                 obj.id = cursor.getString(cursor.getColumnIndex(DBHelper.AUTHORITY_COL_ID));
                 obj.name = cursor.getString(cursor.getColumnIndex(DBHelper.AUTHORITY_COL_NAME));
-                obj.isShow = cursor.getString(cursor.getColumnIndex(DBHelper.AUTHORITY_COL_IS_SHOW));
+                obj.authority = cursor.getString(cursor.getColumnIndex(DBHelper.AUTHORITY_COL_AUTHORITY));
                 list.add(obj);
             } while (cursor.moveToNext());
         }

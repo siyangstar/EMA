@@ -6,5 +6,5 @@ package com.cqsynet.ema.model;
 public class AuthorityObject {
     public String id;
     public String name;
-    public String isShow; //0:隐藏   1:显示
+    public String authority = "0"; //1:可访问   0:不可访问
 }

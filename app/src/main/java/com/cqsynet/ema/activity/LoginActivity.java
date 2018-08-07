@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.db.AuthorityDao;
+import com.cqsynet.ema.model.AuthorityObject;
 import com.cqsynet.ema.model.LoginResponseObject;
 import com.cqsynet.ema.network.OkgoRequest;
 import com.cqsynet.ema.network.OkgoRequest.IResponseCallback;
@@ -21,6 +22,7 @@ import com.cqsynet.ema.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -74,8 +76,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin_activity_login:
-                attemptLogin();
-//                login("18680933386", "111111");
+//                attemptLogin();
+                login("admin", "admin");
                 break;
             case R.id.btnForgotPassword_activity_login:
                 Intent intent = new Intent(this, ForgetPswActivity.class);
@@ -156,7 +158,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
                             SharedPreferencesUtil.setTagString(LoginActivity.this, SharedPreferencesUtil.SEESION_ID, responseObj.data.sessionid);
-                            AuthorityDao.getInstance(LoginActivity.this).saveAuthority(responseObj.data.power);
+                            if(responseObj.data != null && responseObj.data.allPower != null && responseObj.data.power != null) {
+                                Iterator<AuthorityObject> iterator = responseObj.data.power.iterator();
+                                while (iterator.hasNext()) {
+                                    AuthorityObject object = iterator.next();
+                                    Iterator<AuthorityObject> allIterator = responseObj.data.allPower.iterator();
+                                    while (allIterator.hasNext()) {
+                                        AuthorityObject allObject = allIterator.next();
+                                        if(allObject.id.equals(object.id)) {
+                                            allObject.authority = "1";
+                                        }
+                                    }
+                                }
+                                AuthorityDao.getInstance(LoginActivity.this).saveAuthority(responseObj.data.allPower);
+                            }
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);

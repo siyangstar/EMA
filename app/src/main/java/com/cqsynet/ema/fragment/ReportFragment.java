@@ -24,7 +24,7 @@ import com.cqsynet.ema.model.MessageEvent;
 public class ReportFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlFilter;
-    private FilterFragment mFilterFragment;
+    private EquipmentFilterFragment mEquipmentFilterFragment;
     private WorkOrderListFragment mListFragment;
 
     @Nullable
@@ -44,7 +44,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         view.findViewById(R.id.tvFilter_sort_filter).setOnClickListener(this);
 
         getFragmentManager().beginTransaction().add(R.id.flRecyclerView_fragment_report, mListFragment).commitAllowingStateLoss();
-        getFragmentManager().beginTransaction().add(R.id.flFilter_fragment_report, mFilterFragment).commitAllowingStateLoss();
+        getFragmentManager().beginTransaction().add(R.id.flFilter_fragment_report, mEquipmentFilterFragment).commitAllowingStateLoss();
 
         return view;
     }
@@ -53,7 +53,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFilterFragment = new FilterFragment();
+        mEquipmentFilterFragment = new EquipmentFilterFragment();
         mListFragment = new WorkOrderListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_REPORT);

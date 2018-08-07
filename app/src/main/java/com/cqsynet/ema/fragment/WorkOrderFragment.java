@@ -21,7 +21,7 @@ import com.cqsynet.ema.model.MessageEvent;
 public class WorkOrderFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlFilter;
-    private FilterFragment mFilterFragment;
+    private WorkOrderFilterFragment mFilterFragment;
     private WorkOrderListFragment mListFragment;
 
     @Nullable
@@ -45,7 +45,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFilterFragment = new FilterFragment();
+        mFilterFragment = new WorkOrderFilterFragment();
         mListFragment = new WorkOrderListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_WORK_ORDER);
