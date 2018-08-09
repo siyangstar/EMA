@@ -107,6 +107,8 @@ public class EquipmentFilterFragment extends BaseFragment implements View.OnClic
             case R.id.btnConfirm_fragment_equipment_filter:
                 Bundle bundleConfirm = new Bundle();
                 bundleConfirm.putString("type", "confirmFilter");
+                bundleConfirm.putString("location", mSelectedLocationObject != null ? mSelectedLocationObject.WZ_BM : "");
+                bundleConfirm.putString("system", mSelectedSystemCategoryObject != null ? mSelectedSystemCategoryObject.ZL_BM : "");
                 EventBus.getDefault().post(new MessageEvent(bundleConfirm));
                 break;
         }

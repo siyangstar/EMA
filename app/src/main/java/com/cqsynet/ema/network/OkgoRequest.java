@@ -23,9 +23,11 @@ import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -36,15 +38,27 @@ public class OkgoRequest {
     public static final String TAG = "EMARequest";
 
     /**
+     * 处理不含文件的请求
+     *
+     * @param context
+     * @param url
+     * @param paramMap
+     * @param callbackIf
+     */
+    public static void excute(final Context context, String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
+        excute(context, url, paramMap, null, callbackIf);
+    }
+
+    /**
      * 处理请求
      *
      * @param url
      */
-    public static void excute(final Context context, String url, Map<String, String> paramMap, final IResponseCallback callbackIf) {
+    public static void excute(final Context context, String url, Map<String, String> paramMap, File file, final IResponseCallback callbackIf) {
         final String requestUrl = url;
-        if(Globals.DEBUG) {
+        if (Globals.DEBUG) {
             Log.d(TAG, "请求:  " + url);
-            if(paramMap != null) {
+            if (paramMap != null) {
                 Gson gson = new Gson();
                 String requestStr = gson.toJson(paramMap).toString();
                 Log.d(TAG, requestStr.trim());
@@ -52,13 +66,19 @@ public class OkgoRequest {
                 Log.d(TAG, "无特殊参数");
             }
         }
-        if(url.equals(AppConstants.URL_LOGIN)) {
+        if (url.equals(AppConstants.URL_LOGIN)) {
             url = AppConstants.URL_MAIN + url;
         } else {
             url = AppConstants.URL_MAIN + url + ";JSESSIONID=" + SharedPreferencesUtil.getTagString(context, SharedPreferencesUtil.SEESION_ID);
         }
-        OkGo.<String>post(url)
-                .params(paramMap)
+        PostRequest post = OkGo.<String>post(url);
+        if (file == null) {
+            post.isMultipart(false);
+        } else {
+            post.isMultipart(true);
+            post.params("file", file);
+        }
+        post.params(paramMap)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

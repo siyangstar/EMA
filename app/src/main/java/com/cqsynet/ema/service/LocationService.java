@@ -53,7 +53,7 @@ public class LocationService {
                                 sb.append(location.getTime());
                                 sb.append("\nlocType : ");// 定位类型
                                 sb.append(location.getLocType());
-                                sb.append("\nlocType description : ");// *****对应的定位类型说明*****
+                                sb.append("\nlocType label : ");// *****对应的定位类型说明*****
                                 sb.append(location.getLocTypeDescription());
                                 sb.append("\nlatitude : ");// 纬度
                                 sb.append(location.getLatitude());

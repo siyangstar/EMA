@@ -6,16 +6,6 @@
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:background="@color/bg_gray"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

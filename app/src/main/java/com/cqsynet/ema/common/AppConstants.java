@@ -33,6 +33,8 @@ public class AppConstants {
     public static final String URL_GET_WORK_ORDER = "/eam/phone/getGdList"; //获取工单列表
     public static final String URL_GET_ASSET = "/eam/phone/getZcList";// 获取资产列表
     public static final String URL_GET_USER_DEPARTMENT = "/sys/user/getUserOffice"; //获取用户部门
+    public static final String URL_SAVE_USER_DEPARTMENT = "/sys/user/switchOffice"; //保存用户部门
+    public static final String URL_UPLOAD_IMAGE = "/eam/phone/upload"; //上传图片
 
     public static final String TAG_ASSET = "asset";
     public static final String TAG_WORK_ORDER = "workOrder";

@@ -48,13 +48,14 @@ public class DictionaryDao {
         if(processMap != null) {
             Iterator<String> keyIterator = processMap.keySet().iterator();
             while (keyIterator.hasNext()) {
-                HashMap<String, String> valueMap = processMap.get(keyIterator.next());
+                String mainKey = keyIterator.next();
+                HashMap<String, String> valueMap = processMap.get(mainKey);
                 Iterator<String> iterator = valueMap.keySet().iterator();
                 while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    String value = valueMap.get(key);
+                    String subKey = iterator.next();
+                    String value = valueMap.get(subKey);
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put(DBHelper.DICTIONARY_COL_ID, key);
+                    contentValues.put(DBHelper.DICTIONARY_COL_ID, mainKey + "@@@@" + subKey);
                     contentValues.put(DBHelper.DICTIONARY_COL_TYPE, "process");
                     contentValues.put(DBHelper.DICTIONARY_COL_DESCRIPTION, value);
                     db.getWritableDatabase().insert(DBHelper.TABLE_DICTIONARY, null, contentValues);
@@ -73,7 +74,7 @@ public class DictionaryDao {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(DBHelper.DICTIONARY_COL_ID, dictionaryObject.id);
                     contentValues.put(DBHelper.DICTIONARY_COL_TYPE, dictionaryObject.type);
-                    contentValues.put(DBHelper.DICTIONARY_COL_DESCRIPTION, dictionaryObject.description);
+                    contentValues.put(DBHelper.DICTIONARY_COL_DESCRIPTION, dictionaryObject.label);
                     db.getWritableDatabase().insert(DBHelper.TABLE_DICTIONARY, null, contentValues);
                 }
             }
@@ -95,7 +96,7 @@ public class DictionaryDao {
                 DictionaryObject obj = new DictionaryObject();
                 obj.id = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_ID));
                 obj.type = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_TYPE));
-                obj.description = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_DESCRIPTION));
+                obj.label = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_DESCRIPTION));
                 list.add(obj);
             } while (cursor.moveToNext());
         }
@@ -114,8 +115,7 @@ public class DictionaryDao {
         String des = "";
         if(!TextUtils.isEmpty(type) && !TextUtils.isEmpty(id)) {
             DBHelper db = new DBHelper(mContext);
-            Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_DICTIONARY, null, DBHelper.DICTIONARY_COL_TYPE + "=? and " + DBHelper.DICTIONARY_COL_ID + "=?", new String[]{type, id}, null, null, null);
-
+            Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_DICTIONARY, null, DBHelper.DICTIONARY_COL_TYPE + "=? and " + DBHelper.DICTIONARY_COL_ID + " like ?", new String[]{type, "%" + id + "%"}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 des = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_DESCRIPTION));
             }

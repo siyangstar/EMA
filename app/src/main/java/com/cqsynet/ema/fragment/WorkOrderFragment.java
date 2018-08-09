@@ -23,16 +23,16 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
     private FrameLayout mFlFilter;
     private WorkOrderFilterFragment mFilterFragment;
     private WorkOrderListFragment mListFragment;
+    private TextView mTvSort;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_workorder, container, false);
-        TextView tvTitle = view.findViewById(R.id.tvTitle_titlebar);
+        ((TextView) view.findViewById(R.id.tvTitle_titlebar)).setText(R.string.work_order);
+        mTvSort = view.findViewById(R.id.tvSort_sort_filter);
         mFlFilter = view.findViewById(R.id.flFilter_fragment_workorder);
-
-        tvTitle.setText(R.string.work_order);
-        view.findViewById(R.id.tvSort_sort_filter).setOnClickListener(this);
+        mTvSort.setOnClickListener(this);
         view.findViewById(R.id.tvFilter_sort_filter).setOnClickListener(this);
 
         getFragmentManager().beginTransaction().add(R.id.flRecyclerView_fragment_workorder, mListFragment).commitAllowingStateLoss();
@@ -65,6 +65,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                mTvSort.setText(getResources().getStringArray(R.array.workorder_sort)[which]);
                                 String value = getResources().getStringArray(R.array.workorder_sort_value)[which];
                                 mListFragment.setOrderByParam(value);
                             }
@@ -89,6 +90,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
             mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
             mFlFilter.setVisibility(View.GONE);
+            mListFragment.setFilter(bundle.getString("startDate"), bundle.getString("endDate"), bundle.getString("status"), bundle.getString("onlyMine"));
         }
     }
 
@@ -97,12 +99,10 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
      *
      */
     public <T extends Fragment> void switchFilter() {
-        if(mFlFilter.getVisibility() == View.VISIBLE) {
+        if (mFlFilter.getVisibility() == View.VISIBLE) {
             mFlFilter.setVisibility(View.GONE);
         } else {
             mFlFilter.setVisibility(View.VISIBLE);
         }
     }
-
-
 }

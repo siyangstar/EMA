@@ -6,5 +6,5 @@ package com.cqsynet.ema.model;
 public class DictionaryObject {
     public String id;
     public String type; //tb_gd_yxj:工单优先级   gdzt:工单状态
-    public String description;
+    public String label;
 }

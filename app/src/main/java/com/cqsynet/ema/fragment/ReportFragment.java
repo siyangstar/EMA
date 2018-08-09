@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.blankj.utilcode.util.ToastUtils;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.activity.SubmitReportActivity;
 import com.cqsynet.ema.common.AppConstants;
@@ -24,8 +23,9 @@ import com.cqsynet.ema.model.MessageEvent;
 public class ReportFragment extends BaseFragment implements View.OnClickListener {
 
     private FrameLayout mFlFilter;
-    private EquipmentFilterFragment mEquipmentFilterFragment;
+    private WorkOrderFilterFragment mFilterFragment;
     private WorkOrderListFragment mListFragment;
+    private TextView mTvSort;
 
     @Nullable
     @Override
@@ -38,13 +38,15 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         tvTitle.setText(R.string.report);
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText(R.string.submit_report);
+        mTvSort = view.findViewById(R.id.tvSort_sort_filter);
+        mTvSort.setOnClickListener(this);
 
         tvRight.setOnClickListener(this);
-        view.findViewById(R.id.tvSort_sort_filter).setOnClickListener(this);
+        mTvSort.setOnClickListener(this);
         view.findViewById(R.id.tvFilter_sort_filter).setOnClickListener(this);
 
         getFragmentManager().beginTransaction().add(R.id.flRecyclerView_fragment_report, mListFragment).commitAllowingStateLoss();
-        getFragmentManager().beginTransaction().add(R.id.flFilter_fragment_report, mEquipmentFilterFragment).commitAllowingStateLoss();
+        getFragmentManager().beginTransaction().add(R.id.flFilter_fragment_report, mFilterFragment).commitAllowingStateLoss();
 
         return view;
     }
@@ -53,7 +55,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mEquipmentFilterFragment = new EquipmentFilterFragment();
+        mFilterFragment = new WorkOrderFilterFragment();
         mListFragment = new WorkOrderListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_REPORT);
@@ -73,7 +75,9 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                ToastUtils.showShort(text);
+                                mTvSort.setText(getResources().getStringArray(R.array.device_sort)[which]);
+                                String value = getResources().getStringArray(R.array.device_sort_value)[which];
+                                mListFragment.setOrderByParam(value);
                             }
                         })
                         .show();
@@ -101,6 +105,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
             mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
             mFlFilter.setVisibility(View.GONE);
+            mListFragment.setFilter(bundle.getString("startDate"), bundle.getString("endDate"), bundle.getString("status"), bundle.getString("onlyMine"));
         }
     }
 

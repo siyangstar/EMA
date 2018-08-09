@@ -16,23 +16,15 @@
     <string-array name="workorder_sort">
         <item>工单编码</item>
         <item>工单状态</item>
-        <item>工单描述</item>
-        <item>设备信息</item>
-        <item>位置信息</item>
         <item>创建日期</item>
         <item>责任人</item>
-        <item>部门</item>
     </string-array>
 
     <string-array name="workorder_sort_value">
         <item>a.gdBm</item>
         <item>a.lcZt</item>
-        <item>a.gdMs</item>
-        <item>a.sbBmDes</item>
-        <item>a.wzBmDes</item>
         <item></item>
         <item>a.bxr</item>
-        <item>a.bmBmDes</item>
     </string-array>
 
     <string-array name="priority">

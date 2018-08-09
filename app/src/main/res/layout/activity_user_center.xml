@@ -11,13 +11,24 @@
     <include layout="@layout/titlebar"/>
 
     <TextView
+        android:id="@+id/tvName_activity_user_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
         android:textSize="28dp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         tools:text="李云龙"/>
+
+    <TextView
+        android:id="@+id/tvNo_activity_user_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/text2"
+        android:textSize="@dimen/text_size_largex"
+        tools:text="No.9527"/>
 
     <LinearLayout
         android:id="@+id/llDepartment_activity_user_center"
@@ -25,7 +36,7 @@
         android:layout_height="56dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
         android:gravity="center_vertical">
@@ -40,38 +51,6 @@
 
         <TextView
             android:id="@+id/tvDepartment_activity_user_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:textColor="@color/text3"
-            android:textSize="@dimen/text_size_largex"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/next"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llCharacter_activity_user_center"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/my_character"
-            android:textColor="@color/text2"
-            android:textSize="@dimen/text_size_largex"/>
-
-        <TextView
-            android:id="@+id/tvCharacter_activity_user_center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"

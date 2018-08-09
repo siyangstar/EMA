@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,6 +33,7 @@ import java.util.HashMap;
  */
 public class DeviceListActivity extends BaseActivity implements View.OnClickListener {
 
+    private TextView mTvSort;
     private FrameLayout mFlFilter;
     private EquipmentFilterFragment mEquipmentFilterFragment;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -40,17 +42,22 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
     private ArrayList<DeviceObject> mItemList;
     private int mNextPage;
     private String mOrderBy;
+    private String mFilterLocation = "";
+    private String mFilterSystemCategory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
 
+        ((TextView) findViewById(R.id.tvTitle_titlebar)).setText(R.string.select_device);
+        mTvSort = findViewById(R.id.tvSort_sort_filter);
+
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_activity_device_list);
         mRecyclerView = findViewById(R.id.recyclerview_activity_device_list);
         mFlFilter = findViewById(R.id.flFilter_activity_device_list);
 
-        findViewById(R.id.tvSort_sort_filter).setOnClickListener(this);
+        mTvSort.setOnClickListener(this);
         findViewById(R.id.tvFilter_sort_filter).setOnClickListener(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,21 +71,21 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getDeviceList(true, 1, mOrderBy);
+                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
             }
         });;
 
         mListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                getDeviceList(false, mNextPage, mOrderBy);
+                getDeviceList(false, mNextPage, mOrderBy, mFilterLocation, mFilterSystemCategory);
             }
         }, mRecyclerView);
 
         mListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                DeviceObject deviceObject = mItemList.get(position);
+                DeviceObject deviceObject = mListAdapter.getData().get(position);
                 Intent intent = new Intent();
                 intent.putExtra("deviceName", deviceObject.ZC_MS);
                 intent.putExtra("deviceId", deviceObject.ZC_BM);
@@ -92,13 +99,13 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         getFragmentManager().beginTransaction().add(R.id.flFilter_activity_device_list, mEquipmentFilterFragment).commitAllowingStateLoss();
 
         mOrderBy = getResources().getStringArray(R.array.device_sort_value)[0];
-        getDeviceList(true, 1, mOrderBy);
+        getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
     }
 
-    private void getDeviceList(final boolean isRefresh, final int pageNo, String orderBy) {
+    private void getDeviceList(final boolean isRefresh, final int pageNo, String orderBy, String location, String systemCategory) {
         HashMap<String, String> paramMap = new HashMap<>();
-        paramMap.put("wz", "");
-        paramMap.put("zl", "");
+        paramMap.put("wz", location);
+        paramMap.put("zl", systemCategory);
         paramMap.put("key", "");
         paramMap.put("pageNo", pageNo + "");
         paramMap.put("pageSize", "20");
@@ -169,8 +176,9 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                mTvSort.setText(getResources().getStringArray(R.array.device_sort)[which]);
                                 mOrderBy = getResources().getStringArray(R.array.device_sort_value)[which];
-                                getDeviceList(true, 1, mOrderBy);
+                                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
                             }
                         })
                         .show();
@@ -193,6 +201,9 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
             mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
             mFlFilter.setVisibility(View.GONE);
+            mFilterLocation = bundle.getString("location");
+            mFilterSystemCategory = bundle.getString("system");
+            getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
         }
     }
 }

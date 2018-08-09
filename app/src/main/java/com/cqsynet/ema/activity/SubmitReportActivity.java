@@ -23,9 +23,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.AddImageGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.common.Globals;
 import com.cqsynet.ema.db.ErrorAppearanceDao;
 import com.cqsynet.ema.model.ErrorAppearanceObject;
 import com.cqsynet.ema.model.ResponseObject;
+import com.cqsynet.ema.model.UpLoadFileResponseObject;
 import com.cqsynet.ema.network.OkgoRequest;
 import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
@@ -33,6 +35,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +60,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     private String mErrorAppearanceId;
     private String mDeviceId;
     private int mImageClickPosition; //添加图片的位置
+    private ArrayList<String> mImageUrlList;
     private static int MAX_IMAGE_NUMBER = 6;
     private static int REQUEST_CODE_OPEN_GALLARY = 1;
     private static int REQUEST_CODE_SCAN = 2;
@@ -97,6 +101,11 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.llAppearance_activity_submit_report).setOnClickListener(this);
         findViewById(R.id.btnSubmit_activity_submit_report).setOnClickListener(this);
 
+        mTvPerson.setText(Globals.g_UserInfo.name);
+        mTvDepartment.setText(Globals.g_UserInfo.office.name);
+
+        mImageUrlList = new ArrayList<>();
+
         mImageList = new ArrayList<>();
         mImageList.add("");
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -128,9 +137,15 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                             })
                             .start();
                 } else {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, REQUEST_CODE_OPEN_GALLARY);
-                    mImageClickPosition = position;
+                    if(position == mImageList.size() - 1 && position != 5) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, REQUEST_CODE_OPEN_GALLARY);
+                        mImageClickPosition = position;
+                    } else {
+                        mImageList.remove(position);
+                        mImageAdapter.notifyDataSetChanged();
+                        System.out.println("delete");
+                    }
                 }
             }
         });
@@ -224,6 +239,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
             String imagePath = c.getString(columnIndex);
             c.close();
             setImage(imagePath);
+            uploadImage(imagePath);
         } else if (requestCode == REQUEST_CODE_SCAN && resultCode == Activity.RESULT_OK && data != null) {
             //处理扫描结果
             Bundle bundle = data.getExtras();
@@ -257,6 +273,41 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     }
 
     /**
+     * 上传图片
+     * @param imagePath
+     */
+    private void uploadImage(String imagePath) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("name", "file");
+        File file = new File(imagePath);
+        OkgoRequest.excute(this, AppConstants.URL_UPLOAD_IMAGE, paramMap, file, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                mProgressDialog.dismiss();
+                if (response != null) {
+                    Gson gson = new Gson();
+                    UpLoadFileResponseObject responseObj = gson.fromJson(response, UpLoadFileResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            String imageUrl = responseObj.data.serverurl.substring(0, responseObj.data.serverurl.length() - 1) + responseObj.data.url.replace("\\", "/");
+                            mImageUrlList.add(imageUrl);
+                            System.out.println(imageUrl);
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                ToastUtils.showShort(R.string.submit_failed);
+                mProgressDialog.dismiss();
+            }
+        });
+    }
+
+    /**
      * 提交报修
      */
     private void submitReport() {
@@ -276,7 +327,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         paramMap.put("yxj", mTvPriority.getText().toString().trim());
         paramMap.put("gzxxBm", mErrorAppearanceId);
         paramMap.put("bgr", mTvPerson.getText().toString().trim());
-        paramMap.put("imgList", "");
+        paramMap.put("imgList", mImageUrlList.toString().substring(1, mImageUrlList.size() - 1));
 
         OkgoRequest.excute(this, AppConstants.URL_SUBMIT_REPORT, paramMap, new OkgoRequest.IResponseCallback() {
             @Override

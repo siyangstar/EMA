@@ -58,9 +58,9 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 mDateDialog.dismiss();
                 if(mDateType == 0) {
-                    mTvStartDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                    mTvStartDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                 } else {
-                    mTvEndDate.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                    mTvEndDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                 }
             }
         });
@@ -82,7 +82,7 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
                 bundleConfirm.putString("startDate", mTvStartDate.getText().toString().trim());
                 bundleConfirm.putString("endDate", mTvEndDate.getText().toString().trim());
                 bundleConfirm.putString("status", mTvStatus.getText().toString().trim());
-                bundleConfirm.putBoolean("onlyMine", mCbOnlyMine.isChecked());
+                bundleConfirm.putString("onlyMine", mCbOnlyMine.isChecked() ? "0" : "1");
                 EventBus.getDefault().post(new MessageEvent(bundleConfirm));
                 break;
             case R.id.tvStartDate_fragment_workorder_filter:
@@ -92,6 +92,9 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
             case R.id.tvEndDate_fragment_workorder_filter:
                 mDateType = 1;
                 mDateDialog.show();
+                break;
+            case R.id.tvStatus_fragment_workorder_filter:
+//                DictionaryDao.getInstance(mContext).queryDictionary("gd")
                 break;
         }
     }
