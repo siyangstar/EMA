@@ -106,7 +106,11 @@ public class OkgoRequest {
                             Gson gson = new Gson();
                             ResponseObject object = gson.fromJson(msg, ResponseObject.class);
                             if (object.ret.equals("1") && object.msg.equals("session过期")) {
-
+                                //注销当前用户,跳转到登录界面
+                                SharedPreferencesUtil.removeData(context, SharedPreferencesUtil.SEESION_ID);
+                                Intent intent = new Intent(context, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(intent);
                             }
                             callbackIf.onResponse(msg);
                         } catch (JsonSyntaxException e) {

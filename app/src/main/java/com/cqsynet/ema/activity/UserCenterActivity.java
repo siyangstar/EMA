@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.blankj.utilcode.util.ToastUtils;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.common.Globals;
@@ -43,9 +44,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.btnLogout_activity_user_center).setOnClickListener(this);
         findViewById(R.id.llDepartment_activity_user_center).setOnClickListener(this);
 
-        mTvName.setText(Globals.g_UserInfo.name);
-        mTvNo.setText(Globals.g_UserInfo.no);
-        mTvDepartment.setText(Globals.g_UserInfo.office.name);
+        if (Globals.g_UserInfo != null) {
+            mTvName.setText(Globals.g_UserInfo.name);
+            mTvNo.setText(Globals.g_UserInfo.no);
+            if (Globals.g_UserInfo.office != null) {
+                mTvDepartment.setText(Globals.g_UserInfo.office.name);
+            }
+        }
 
         mDepartmentNameList = new ArrayList<>();
         Iterator<DepartmentObject> iterator = Globals.g_UserInfo.officeList.iterator();
@@ -67,22 +72,26 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 logout();
                 break;
             case R.id.llDepartment_activity_user_center:
-                new MaterialDialog.Builder(this)
-                        .items(mDepartmentNameList)
-                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                mDepartmentObject = Globals.g_UserInfo.officeList.get(which);
-                                if(mDepartmentObject != null) {
-                                    mTvDepartment.setText(mDepartmentObject.name);
+                if (mDepartmentNameList.size() == 0) {
+                    ToastUtils.showShort("无所属部门");
+                } else {
+                    new MaterialDialog.Builder(this)
+                            .items(mDepartmentNameList)
+                            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                    mDepartmentObject = Globals.g_UserInfo.officeList.get(which);
+                                    if (mDepartmentObject != null) {
+                                        mTvDepartment.setText(mDepartmentObject.name);
+                                    }
+                                    Globals.g_UserInfo.office = mDepartmentObject;
+                                    saveDepartment();
+                                    return true;
                                 }
-                                Globals.g_UserInfo.office = mDepartmentObject;
-                                saveDepartment();
-                                return true;
-                            }
-                        })
-                        .positiveText("保存")
-                        .show();
+                            })
+                            .positiveText("保存")
+                            .show();
+                }
                 break;
         }
     }

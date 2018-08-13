@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.blankj.utilcode.util.ToastUtils;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.common.Globals;
 import com.cqsynet.ema.db.AuthorityDao;
 import com.cqsynet.ema.model.AuthorityObject;
 import com.cqsynet.ema.model.LoginResponseObject;
@@ -76,8 +77,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin_activity_login:
-                attemptLogin();
-//                login("admin", "admin");
+                if(Globals.DEBUG) {
+                    login("admin", "admin");
+                } else {
+                    attemptLogin();
+                }
                 break;
             case R.id.btnForgotPassword_activity_login:
                 Intent intent = new Intent(this, ForgetPswActivity.class);

@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 
 /**
  * 取消BottomNavigationView按钮超过3个时的偏移动画
+ * (需在混淆中设置,以防止失效)
  */
 public class BottomNavigationViewHelper {
     @SuppressLint("RestrictedApi")

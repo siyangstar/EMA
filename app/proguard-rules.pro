@@ -79,7 +79,8 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 -keep class sun.misc.Unsafe { *; }
--keep class com.cqsynet.swifi.model.** { *; }
+#注意下面这行每个项目要修改为自己特定的名称!!!!!!
+-keep class com.cqsynet.ema.model.** { *; }
 -keep class com.google.gson.stream.** { *; }
 -keep class com.google.gson.** { *;}
 
@@ -118,18 +119,6 @@
 #AndPermission
 -dontwarn com.yanzhenjie.permission.**
 
-#alipay
--keep class com.alipay.android.app.IAlixPay{*;}
--keep class com.alipay.android.app.IAlixPay$Stub{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
--keep class com.alipay.sdk.app.PayTask{ public *;}
--keep class com.alipay.sdk.app.AuthTask{ public *;}
--dontwarn android.net.**
--keep class android.net.SSLCertificateSocketFactory{*;}
--dontwarn com.ta.utdid2.device.**
--keep class com.ta.utdid2.device.**{*;}
-
 #BaseRecyclerViewAdapterHelper
 -keep class com.chad.library.adapter.** {
 *;
@@ -149,4 +138,10 @@
 # Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
+}
+
+#BottomNavigationView
+#防止偏移动画设置失效
+-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
+    boolean mShiftingMode;
 }

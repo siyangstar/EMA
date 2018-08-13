@@ -103,8 +103,12 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.llAppearance_activity_submit_report).setOnClickListener(this);
         findViewById(R.id.btnSubmit_activity_submit_report).setOnClickListener(this);
 
-        mTvPerson.setText(Globals.g_UserInfo.name);
-        mTvDepartment.setText(Globals.g_UserInfo.office.name);
+        if (Globals.g_UserInfo != null) {
+            mTvPerson.setText(Globals.g_UserInfo.name);
+            if (Globals.g_UserInfo.office != null) {
+                mTvDepartment.setText(Globals.g_UserInfo.office.name);
+            }
+        }
 
         mImageUrlList = new ArrayList<>();
 
