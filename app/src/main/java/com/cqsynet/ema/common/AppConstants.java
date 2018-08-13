@@ -35,12 +35,18 @@ public class AppConstants {
     public static final String URL_GET_USER_DEPARTMENT = "/sys/user/getUserOffice"; //获取用户部门
     public static final String URL_SAVE_USER_DEPARTMENT = "/sys/user/switchOffice"; //保存用户部门
     public static final String URL_UPLOAD_IMAGE = "/eam/phone/upload"; //上传图片
+    public static final String URL_TODOLIST_NO = "/act/process/data"; //未办任务
+    public static final String URL_TODOLIST_YES = "/act/process/hiUserTask"; //已办任务
+
+    public static final String URL_WORKORDER_DETAIL = "http://113.204.4.244:8000/JKALL/static/phone/#/index"; //资产详情
+    public static final String URL_ASSET_DETAIL = "http://113.204.4.244:8000/JKALL/static/phone/#/assets"; //工单详情
 
     public static final String TAG_ASSET = "asset";
     public static final String TAG_WORK_ORDER = "workOrder";
     public static final String TAG_KPI = "kpi";
     public static final String TAG_REPORT = "report";
     public static final String TAG_TODO_LIST = "todoList";
+    public static final String TAG_DEVICE = "device";
 
     public static final String RET_OK = "0";
 

@@ -40,10 +40,18 @@
         <activity
             android:name=".activity.ForgetPswActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.DeviceListActivity">
-        </activity>
-        <activity android:name=".activity.UserCenterActivity">
-        </activity>
+        <activity
+            android:name=".activity.DeviceListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.UserCenterActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.TodoListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.WebActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

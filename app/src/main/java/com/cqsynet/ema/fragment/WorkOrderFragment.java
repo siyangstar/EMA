@@ -50,6 +50,7 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_WORK_ORDER);
         mListFragment.setArguments(bundle);
+        mFilterFragment.setArguments(bundle);
     }
 
     @Override
@@ -89,8 +90,10 @@ public class WorkOrderFragment extends BaseFragment implements View.OnClickListe
         if(type.equals("cancelFilter")) {
             mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
-            mFlFilter.setVisibility(View.GONE);
-            mListFragment.setFilter(bundle.getString("startDate"), bundle.getString("endDate"), bundle.getString("status"), bundle.getString("onlyMine"));
+            if (bundle.getString("category").equals(AppConstants.TAG_WORK_ORDER)) {
+                mFlFilter.setVisibility(View.GONE);
+                mListFragment.setFilter(bundle.getString("startDate"), bundle.getString("endDate"), bundle.getString("status"), bundle.getString("onlyMine"));
+            }
         }
     }
 

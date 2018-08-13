@@ -30,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String AUTHORITY_COL_AUTHORITY = "authority";
     // 字典字段
     public static final String DICTIONARY_COL_ID = "id";
+    public static final String DICTIONARY_COL_VALUE = "value";
     public static final String DICTIONARY_COL_TYPE = "type";
     public static final String DICTIONARY_COL_DESCRIPTION = "description";
     // 位置字段
@@ -53,7 +54,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + AUTHORITY_COL_AUTHORITY + " TEXT)";
     // 创建字典表的语句
     public static final String CREATE_TABLE_DICTIONARY = "CREATE TABLE IF NOT EXISTS " + TABLE_DICTIONARY + "("
-            + DICTIONARY_COL_ID + " TEXT PRIMARY KEY,"
+            + DICTIONARY_COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + DICTIONARY_COL_VALUE + " TEXT,"
             + DICTIONARY_COL_TYPE + " TEXT,"
             + DICTIONARY_COL_DESCRIPTION + " TEXT)";
     // 创建位置表的语句

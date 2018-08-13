@@ -19,10 +19,10 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.activity.WebActivity;
-import com.cqsynet.ema.adapter.WorkOrderListAdapter;
+import com.cqsynet.ema.adapter.AssetListAdapter;
 import com.cqsynet.ema.common.AppConstants;
-import com.cqsynet.ema.model.WorkOrderObject;
-import com.cqsynet.ema.model.WorkOrderResponseObject;
+import com.cqsynet.ema.model.AssetObject;
+import com.cqsynet.ema.model.AssetResponseObject;
 import com.cqsynet.ema.network.OkgoRequest;
 import com.google.gson.Gson;
 
@@ -31,30 +31,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 列表模块(工单列表,报修列表共用)
+ * 资产列表模块
  */
-public class WorkOrderListFragment extends BaseFragment {
+public class AssetListFragment extends BaseFragment {
 
-    private String mCategory;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private WorkOrderListAdapter mListAdapter;
+    private AssetListAdapter mListAdapter;
     private int mNextPage;
     private String mOrderBy;
-    private String mStartDate = "";
-    private String mEndDate = "";
-    private String mStatus = "";
-    private String mOnlyMine = "myDataUserId";
     private EditText mEtSearch;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCategory = getArguments().getString("category");
-        mListAdapter = new WorkOrderListAdapter(R.layout.item_recycler_workorder_list, new ArrayList<>());
+        mListAdapter = new AssetListAdapter(R.layout.item_recycler_asset_list, new ArrayList<>());
 
         mOrderBy = ""; //默认排序
-        getWorkOrderList(mStartDate, mEndDate, mStatus, mOnlyMine,true, 1, mOrderBy, "");
+        getAssetList(true, 1, mOrderBy, "");
     }
 
     @Nullable
@@ -75,7 +69,7 @@ public class WorkOrderListFragment extends BaseFragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH) {
                     //执行搜索
-                    getWorkOrderList(mStartDate, mEndDate, mStatus, mOnlyMine,true, 1, mOrderBy, mEtSearch.getText().toString().trim());
+                    getAssetList(true, 1, mOrderBy, mEtSearch.getText().toString().trim());
                     return true;
                 }
                 return false;
@@ -86,7 +80,7 @@ public class WorkOrderListFragment extends BaseFragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getWorkOrderList(mStartDate, mEndDate, mStatus, mOnlyMine,true, 1, mOrderBy, mEtSearch.getText().toString().trim());
+                getAssetList(true, 1, mOrderBy, mEtSearch.getText().toString().trim());
             }
         });
 
@@ -94,23 +88,20 @@ public class WorkOrderListFragment extends BaseFragment {
         mListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if(mCategory.equals(AppConstants.TAG_WORK_ORDER)) {
-                    //工单列表点击进入工单详情, 报修列表不能点击
-                    WorkOrderObject workOrderObject = mListAdapter.getData().get(position);
-                    Intent intent = new Intent(mContext, WebActivity.class);
-                    intent.putExtra("url", AppConstants.URL_WORKORDER_DETAIL);
-                    intent.putExtra("category", mCategory);
-                    intent.putExtra("id", workOrderObject.id);
-                    intent.putExtra("title", getString(R.string.workorder_detail));
-                    startActivity(intent);
-                }
+                AssetObject object = mListAdapter.getData().get(position);
+                Intent intent = new Intent(mContext, WebActivity.class);
+                intent.putExtra("url", AppConstants.URL_ASSET_DETAIL);
+                intent.putExtra("category", AppConstants.TAG_ASSET);
+                intent.putExtra("id", object.id);
+                intent.putExtra("title", getString(R.string.asset_detail));
+                startActivity(intent);
             }
         });
 
         mListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                getWorkOrderList(mStartDate, mEndDate, mStatus, mOnlyMine,false, mNextPage, mOrderBy, mEtSearch.getText().toString().trim());
+                getAssetList(false, mNextPage, mOrderBy, mEtSearch.getText().toString().trim());
             }
         }, mRecyclerView);
 
@@ -120,36 +111,25 @@ public class WorkOrderListFragment extends BaseFragment {
 
     /**
      *
-     * 获取工单列表
+     * 获取资产列表
      * @param isRefresh true:刷新  false:加载更多
-     * @param startDate
-     * @param endDate
-     * @param status
-     * @param onlyMine 0:只看自己 1:看整个部门
      * @param pageNo
      * @param orderBy
      * @param searchValue 搜索条件
      */
-    private void getWorkOrderList(String startDate, String endDate, String status, String onlyMine, final boolean isRefresh, final int pageNo, String orderBy, String searchValue) {
+    private void getAssetList(final boolean isRefresh, final int pageNo, String orderBy, String searchValue) {
         Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("beginCreateDate", startDate);
-        paramMap.put("endCreateDate", endDate);
-        paramMap.put("lcZt", status);
         paramMap.put("pageNo", pageNo + "");
         paramMap.put("pageSize", "20");
         paramMap.put("orderBy", orderBy);
         paramMap.put("searchVal", searchValue);
-        if(mCategory.equals(AppConstants.TAG_REPORT)) {
-            paramMap.put("myDataUserId", onlyMine);
-            paramMap.put("gdLx", "01");
-        }
-        OkgoRequest.excute(mContext, AppConstants.URL_GET_WORK_ORDER, paramMap, new OkgoRequest.IResponseCallback() {
+        OkgoRequest.excute(mContext, AppConstants.URL_GET_ASSET, paramMap, new OkgoRequest.IResponseCallback() {
             @Override
             public void onResponse(String response) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (response != null) {
                     Gson gson = new Gson();
-                    WorkOrderResponseObject responseObj = gson.fromJson(response, WorkOrderResponseObject.class);
+                    AssetResponseObject responseObj = gson.fromJson(response, AssetResponseObject.class);
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
                             if(isRefresh) {
@@ -190,21 +170,6 @@ public class WorkOrderListFragment extends BaseFragment {
      */
     public void setOrderByParam(String orderBy) {
         mOrderBy = orderBy;
-        getWorkOrderList(mStartDate, mEndDate, mStatus, mOnlyMine,true, 1, mOrderBy, mEtSearch.getText().toString().trim());
-    }
-
-    /**
-     * 设置过滤条件
-     * @param startDate
-     * @param endDate
-     * @param status
-     * @param onlyMine
-     */
-    public void setFilter(String startDate, String endDate, String status, String onlyMine) {
-        mStartDate = startDate;
-        mEndDate = endDate;
-        mStatus = status;
-        mOnlyMine = onlyMine;
-        getWorkOrderList(mStartDate, mEndDate, mStatus, mOnlyMine,true, 1, mOrderBy, mEtSearch.getText().toString().trim());
+        getAssetList(true, 1, mOrderBy, mEtSearch.getText().toString().trim());
     }
 }

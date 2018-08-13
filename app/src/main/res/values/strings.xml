@@ -8,7 +8,7 @@
     <string name="work_order">工单</string>
     <string name="report">报修</string>
     <string name="submit_report">我要报修</string>
-    <string name="sort">综合排序</string>
+    <string name="sort">排序</string>
     <string name="device_sort">设备排序</string>
     <string name="filter">筛选</string>
     <string name="location">位置</string>
@@ -39,15 +39,18 @@
     <string name="send_verify_code">发送验证码</string>
     <string name="no_authority">您没有权限访问此模块</string>
     <string name="request_failed">服务器维护中,请稍后重试</string>
-    <string name="device_list">设备列表</string>
     <string name="submit_success">报修成功</string>
     <string name="submit_failed">报修失败</string>
     <string name="my_department">当前部门</string>
-    <string name="my_character">当前角色</string>
     <string name="user_center">个人中心</string>
     <string name="to">至</string>
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="only_mine">只显示我的</string>
     <string name="status">状态</string>
+    <string name="search_key">搜索关键字</string>
+    <string name="todolist_no">未办任务</string>
+    <string name="todolist_yes">已办任务</string>
+    <string name="workorder_detail">工单详情</string>
+    <string name="asset_detail">资产详情</string>
 </resources>

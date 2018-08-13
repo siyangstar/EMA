@@ -118,7 +118,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 if(object.authority.equals("0")) {
                     ToastUtils.showShort(R.string.no_authority);
                 } else if(object.id.equals(AppConstants.ID_TODO_LIST)) {
-
+                    Intent intent = new Intent();
+                    intent.setClass(HomeActivity.this, TodoListActivity.class);
+                    startActivity(intent);
                 } else {
                     Intent intent = new Intent();
                     intent.setClass(HomeActivity.this, MainActivity.class);

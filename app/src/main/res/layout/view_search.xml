@@ -25,6 +25,7 @@
         android:drawablePadding="4dp"
         android:singleLine="true"
         android:lines="1"
+        android:hint="@string/search_key"
         android:textColor="@color/text3"
         android:textSize="@dimen/text_size_mediumx"
         android:imeOptions="actionSearch"

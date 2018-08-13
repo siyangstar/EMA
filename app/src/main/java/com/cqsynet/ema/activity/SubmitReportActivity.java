@@ -25,6 +25,8 @@ import com.cqsynet.ema.adapter.AddImageGridAdapter;
 import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.common.Globals;
 import com.cqsynet.ema.db.ErrorAppearanceDao;
+import com.cqsynet.ema.model.AssetObject;
+import com.cqsynet.ema.model.AssetResponseObject;
 import com.cqsynet.ema.model.ErrorAppearanceObject;
 import com.cqsynet.ema.model.ResponseObject;
 import com.cqsynet.ema.model.UpLoadFileResponseObject;
@@ -248,7 +250,8 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
             }
             if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                 String result = bundle.getString(CodeUtils.RESULT_STRING);
-                Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+//                getAssetById(result);
+                getAssetById("29721c20176749d3a382dc6666f811db");
             } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                 Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
             }
@@ -289,9 +292,8 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                     UpLoadFileResponseObject responseObj = gson.fromJson(response, UpLoadFileResponseObject.class);
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
-                            String imageUrl = responseObj.data.serverurl.substring(0, responseObj.data.serverurl.length() - 1) + responseObj.data.url.replace("\\", "/");
+                            String imageUrl = responseObj.data.url;
                             mImageUrlList.add(imageUrl);
-                            System.out.println(imageUrl);
                         } else {
                             ToastUtils.showShort(responseObj.msg);
                         }
@@ -313,10 +315,13 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
     private void submitReport() {
         if (TextUtils.isEmpty(mDeviceId)) {
             ToastUtils.showShort("请选择设备");
+            return;
         } else if (TextUtils.isEmpty(mTvPriority.getText().toString().trim())) {
             ToastUtils.showShort("请选择优先级");
+            return;
         } else if (TextUtils.isEmpty(mErrorAppearanceId)) {
             ToastUtils.showShort("请选择故障现象");
+            return;
         }
         mProgressDialog.setMessage(getString(R.string.logining));
         mProgressDialog.show();
@@ -327,7 +332,11 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
         paramMap.put("yxj", mTvPriority.getText().toString().trim());
         paramMap.put("gzxxBm", mErrorAppearanceId);
         paramMap.put("bgr", mTvPerson.getText().toString().trim());
-        paramMap.put("imgList", mImageUrlList.toString().substring(1, mImageUrlList.size() - 1));
+        if(mImageUrlList.size() > 0) {
+            paramMap.put("imgList", mImageUrlList.toString().substring(1, mImageUrlList.toString().length() - 1));
+        } else {
+            paramMap.put("imgList", "");
+        }
 
         OkgoRequest.excute(this, AppConstants.URL_SUBMIT_REPORT, paramMap, new OkgoRequest.IResponseCallback() {
             @Override
@@ -339,6 +348,7 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
                     if (responseObj != null) {
                         if (AppConstants.RET_OK.equals(responseObj.ret)) {
                             ToastUtils.showShort(R.string.submit_success);
+                            SubmitReportActivity.this.finish();
                         } else {
                             ToastUtils.showShort(responseObj.msg);
                         }
@@ -350,6 +360,44 @@ public class SubmitReportActivity extends BaseActivity implements View.OnClickLi
             public void onErrorResponse() {
                 ToastUtils.showShort(R.string.submit_failed);
                 mProgressDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 获取资产列表
+     */
+    private void getAssetById(String id) {
+        mProgressDialog.show();
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("id", id);
+        OkgoRequest.excute(this, AppConstants.URL_GET_ASSET, paramMap, new OkgoRequest.IResponseCallback() {
+            @Override
+            public void onResponse(String response) {
+                mProgressDialog.dismiss();
+                if (response != null) {
+                    Gson gson = new Gson();
+                    AssetResponseObject responseObj = gson.fromJson(response, AssetResponseObject.class);
+                    if (responseObj != null) {
+                        if (AppConstants.RET_OK.equals(responseObj.ret)) {
+                            ArrayList<AssetObject> list = responseObj.data.data.list;
+                            if(list != null && list.size() > 0)
+                            mTvDevice.setText(list.get(0).zcMs);
+                            mTvLocation.setText(list.get(0).wzBmDes);
+                            mDeviceId = list.get(0).zcBm;
+                        } else {
+                            ToastUtils.showShort(responseObj.msg);
+                        }
+                    } else {
+                        ToastUtils.showShort(R.string.request_failed);
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse() {
+                mProgressDialog.dismiss();
+                ToastUtils.showShort(R.string.request_failed);
             }
         });
     }

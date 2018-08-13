@@ -9,13 +9,19 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cqsynet.ema.R;
+import com.cqsynet.ema.common.AppConstants;
+import com.cqsynet.ema.db.DictionaryDao;
+import com.cqsynet.ema.model.DictionaryObject;
 import com.cqsynet.ema.model.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 /**
  * 筛选模块
@@ -29,11 +35,27 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
     private MaterialDialog mDateDialog;
     private DatePicker mDatePicker;
     private int mDateType; //0表示开始日期,1表示结束日期
+    private String mCategory;
+    private ArrayList<String> mLabelList;
+    private ArrayList<String> mIdList;
+    private String mStatusValue = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCategory = getArguments().getString("category");
 
+        ArrayList<DictionaryObject> list =  DictionaryDao.getInstance(mContext).queryDictionaryList("process", "470785ea796e477fb894eefd87164234"); //工单的流程状态类别id
+        mLabelList = new ArrayList<>();
+        mLabelList.add("不限");
+        mIdList = new ArrayList<>();
+        mIdList.add("");
+        Iterator<DictionaryObject> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            DictionaryObject object = iterator.next();
+            mLabelList.add(object.label);
+            mIdList.add(object.value);
+        }
     }
 
     @Nullable
@@ -44,8 +66,11 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
         view.findViewById(R.id.btnConfirm_fragment_workorder_filter).setOnClickListener(this);
         mTvStartDate = view.findViewById(R.id.tvStartDate_fragment_workorder_filter);
         mTvEndDate = view.findViewById(R.id.tvEndDate_fragment_workorder_filter);
-        mTvStatus = view.findViewById(R.id.btnCancel_fragment_workorder_filter);
+        mTvStatus = view.findViewById(R.id.tvStatus_fragment_workorder_filter);
         mCbOnlyMine = view.findViewById(R.id.cbOnlyMine_fragment_workorder_filter);
+        if(mCategory.equals(AppConstants.TAG_WORK_ORDER)) {
+            view.findViewById(R.id.flOnlyMine_fragment_workorder_filter).setVisibility(View.INVISIBLE);
+        }
         mTvStartDate.setOnClickListener(this);
         mTvEndDate.setOnClickListener(this);
         mTvStatus.setOnClickListener(this);
@@ -79,10 +104,11 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
             case R.id.btnConfirm_fragment_workorder_filter:
                 Bundle bundleConfirm = new Bundle();
                 bundleConfirm.putString("type", "confirmFilter");
+                bundleConfirm.putString("category", mCategory);
                 bundleConfirm.putString("startDate", mTvStartDate.getText().toString().trim());
                 bundleConfirm.putString("endDate", mTvEndDate.getText().toString().trim());
-                bundleConfirm.putString("status", mTvStatus.getText().toString().trim());
-                bundleConfirm.putString("onlyMine", mCbOnlyMine.isChecked() ? "0" : "1");
+                bundleConfirm.putString("status", mStatusValue);
+                bundleConfirm.putString("onlyMine", mCbOnlyMine.isChecked() ? "myDataUserId" : "");
                 EventBus.getDefault().post(new MessageEvent(bundleConfirm));
                 break;
             case R.id.tvStartDate_fragment_workorder_filter:
@@ -94,7 +120,22 @@ public class WorkOrderFilterFragment extends BaseFragment implements View.OnClic
                 mDateDialog.show();
                 break;
             case R.id.tvStatus_fragment_workorder_filter:
-//                DictionaryDao.getInstance(mContext).queryDictionary("gd")
+                new MaterialDialog.Builder(mContext)
+                        .dividerColorRes(R.color.divider)
+                        .itemsGravity(GravityEnum.CENTER)
+                        .items(mLabelList)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                mTvStatus.setText(mLabelList.get(which));
+                                if(mIdList.get(which).split("@@@@").length > 1) {
+                                    mStatusValue = mIdList.get(which).split("@@@@")[1]; //数据库中使用@@@@连接一级id和二级id
+                                } else {
+                                    mStatusValue = mIdList.get(which);
+                                }
+                            }
+                        })
+                        .show();
                 break;
         }
     }

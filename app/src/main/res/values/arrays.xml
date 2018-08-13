@@ -21,8 +21,8 @@
     </string-array>
 
     <string-array name="workorder_sort_value">
-        <item>a.gdBm</item>
-        <item>a.lcZt</item>
+        <item>a.gd_Bm</item>
+        <item>a.lc_zt</item>
         <item></item>
         <item>a.bxr</item>
     </string-array>
@@ -31,5 +31,25 @@
         <item>高</item>
         <item>中</item>
         <item>低</item>
+    </string-array>
+
+    <string-array name="asset_sort">
+        <item>资产编码</item>
+        <item>资产描述</item>
+        <item>责任人</item>
+        <item>位置</item>
+        <item>管理部门</item>
+        <item>使用部门</item>
+        <item>维修部门</item>
+    </string-array>
+
+    <string-array name="asset_sort_value">
+        <item>a.zc_bm</item>
+        <item>a.zc_ms</item>
+        <item>a.gl_zrr</item>
+        <item>a.wz_bm</item>
+        <item>a.gl_bm</item>
+        <item>a.sy_bm</item>
+        <item>a.wx_bm</item>
     </string-array>
 </resources>

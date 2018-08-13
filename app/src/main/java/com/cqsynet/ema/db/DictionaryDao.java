@@ -55,7 +55,7 @@ public class DictionaryDao {
                     String subKey = iterator.next();
                     String value = valueMap.get(subKey);
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put(DBHelper.DICTIONARY_COL_ID, mainKey + "@@@@" + subKey);
+                    contentValues.put(DBHelper.DICTIONARY_COL_VALUE, mainKey + "@@@@" + subKey);
                     contentValues.put(DBHelper.DICTIONARY_COL_TYPE, "process");
                     contentValues.put(DBHelper.DICTIONARY_COL_DESCRIPTION, value);
                     db.getWritableDatabase().insert(DBHelper.TABLE_DICTIONARY, null, contentValues);
@@ -72,7 +72,7 @@ public class DictionaryDao {
                 while (iterator.hasNext()) {
                     DictionaryObject dictionaryObject = iterator.next();
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put(DBHelper.DICTIONARY_COL_ID, dictionaryObject.id);
+                    contentValues.put(DBHelper.DICTIONARY_COL_VALUE, dictionaryObject.value);
                     contentValues.put(DBHelper.DICTIONARY_COL_TYPE, dictionaryObject.type);
                     contentValues.put(DBHelper.DICTIONARY_COL_DESCRIPTION, dictionaryObject.label);
                     db.getWritableDatabase().insert(DBHelper.TABLE_DICTIONARY, null, contentValues);
@@ -87,14 +87,14 @@ public class DictionaryDao {
      * 查询字典表记录
      * @return
      */
-    public ArrayList<DictionaryObject> queryDictionary(String type) {
+    public ArrayList<DictionaryObject> queryDictionaryList(String type) {
         ArrayList<DictionaryObject> list = new ArrayList<>();
         DBHelper db = new DBHelper(mContext);
         Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_DICTIONARY, null,"type=?", new String[] {type}, null, null, null);
         if(cursor != null && cursor.moveToFirst()) {
             do {
                 DictionaryObject obj = new DictionaryObject();
-                obj.id = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_ID));
+                obj.value = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_VALUE));
                 obj.type = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_TYPE));
                 obj.label = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_DESCRIPTION));
                 list.add(obj);
@@ -102,6 +102,32 @@ public class DictionaryDao {
         }
         cursor.close();
         db.close();
+        return list;
+    }
+
+    /**
+     * 根据id查询字典表
+     * @param type
+     * @param id
+     * @return
+     */
+    public ArrayList<DictionaryObject> queryDictionaryList(String type, String id) {
+        ArrayList<DictionaryObject> list = new ArrayList<>();
+        if(!TextUtils.isEmpty(type) && !TextUtils.isEmpty(id)) {
+            DBHelper db = new DBHelper(mContext);
+            Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_DICTIONARY, null, DBHelper.DICTIONARY_COL_TYPE + "=? and " + DBHelper.DICTIONARY_COL_VALUE + " like ?", new String[]{type, "%" + id + "%"}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    DictionaryObject obj = new DictionaryObject();
+                    obj.value = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_VALUE));
+                    obj.type = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_TYPE));
+                    obj.label = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_DESCRIPTION));
+                    list.add(obj);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        }
         return list;
     }
 
@@ -115,7 +141,7 @@ public class DictionaryDao {
         String des = "";
         if(!TextUtils.isEmpty(type) && !TextUtils.isEmpty(id)) {
             DBHelper db = new DBHelper(mContext);
-            Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_DICTIONARY, null, DBHelper.DICTIONARY_COL_TYPE + "=? and " + DBHelper.DICTIONARY_COL_ID + " like ?", new String[]{type, "%" + id + "%"}, null, null, null);
+            Cursor cursor = db.getReadableDatabase().query(DBHelper.TABLE_DICTIONARY, null, DBHelper.DICTIONARY_COL_TYPE + "=? and " + DBHelper.DICTIONARY_COL_VALUE + " like ?", new String[]{type, "%" + id + "%"}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 des = cursor.getString(cursor.getColumnIndex(DBHelper.DICTIONARY_COL_DESCRIPTION));
             }

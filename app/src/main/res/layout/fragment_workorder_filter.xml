@@ -30,7 +30,7 @@
             android:drawableRight="@drawable/sort"
             android:textSize="@dimen/text_size_large"
             android:textColor="@color/text3"
-            android:text="@string/start_date"
+            android:hint="@string/start_date"
             android:background="@drawable/shape_gray_frame_background"/>
 
         <TextView
@@ -55,7 +55,7 @@
             android:drawableRight="@drawable/sort"
             android:textSize="@dimen/text_size_large"
             android:textColor="@color/text3"
-            android:text="@string/end_date"
+            android:hint="@string/end_date"
             android:background="@drawable/shape_gray_frame_background"/>
     </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:drawableRight="@drawable/sort"
             android:textSize="@dimen/text_size_large"
             android:textColor="@color/text3"
-            android:text="@string/status"
+            android:hint="@string/status"
             android:background="@drawable/shape_gray_frame_background"/>
 
         <Space
@@ -88,6 +88,7 @@
             android:layout_weight="1"/>
 
         <FrameLayout
+            android:id="@+id/flOnlyMine_fragment_workorder_filter"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="9"

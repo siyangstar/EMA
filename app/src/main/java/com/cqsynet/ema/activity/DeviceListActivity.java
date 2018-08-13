@@ -7,7 +7,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -18,7 +21,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.DeviceListAdapter;
 import com.cqsynet.ema.common.AppConstants;
-import com.cqsynet.ema.fragment.EquipmentFilterFragment;
+import com.cqsynet.ema.fragment.DeviceFilterFragment;
 import com.cqsynet.ema.model.DeviceListResponseObject;
 import com.cqsynet.ema.model.DeviceObject;
 import com.cqsynet.ema.model.MessageEvent;
@@ -35,7 +38,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
 
     private TextView mTvSort;
     private FrameLayout mFlFilter;
-    private EquipmentFilterFragment mEquipmentFilterFragment;
+    private DeviceFilterFragment mDeviceFilterFragment;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private DeviceListAdapter mListAdapter;
@@ -44,6 +47,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
     private String mOrderBy;
     private String mFilterLocation = "";
     private String mFilterSystemCategory = "";
+    private EditText mEtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +70,33 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         mListAdapter = new DeviceListAdapter(R.layout.item_recycler_device_list, mItemList);
         mListAdapter.setEnableLoadMore(true);
         mRecyclerView.setAdapter(mListAdapter);
+        View headerView = View.inflate(this, R.layout.view_search, null);
+        mEtSearch = headerView.findViewById(R.id.etSearch_view_search);
+        mListAdapter.addHeaderView(headerView);
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //执行搜索
+                    getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory, mEtSearch.getText().toString().trim());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
+                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory, mEtSearch.getText().toString().trim());
             }
         });;
 
         mListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                getDeviceList(false, mNextPage, mOrderBy, mFilterLocation, mFilterSystemCategory);
+                getDeviceList(false, mNextPage, mOrderBy, mFilterLocation, mFilterSystemCategory, mEtSearch.getText().toString().trim());
             }
         }, mRecyclerView);
 
@@ -95,18 +113,18 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
             }
         });
 
-        mEquipmentFilterFragment = new EquipmentFilterFragment();
-        getFragmentManager().beginTransaction().add(R.id.flFilter_activity_device_list, mEquipmentFilterFragment).commitAllowingStateLoss();
+        mDeviceFilterFragment = new DeviceFilterFragment();
+        getFragmentManager().beginTransaction().add(R.id.flFilter_activity_device_list, mDeviceFilterFragment).commitAllowingStateLoss();
 
         mOrderBy = getResources().getStringArray(R.array.device_sort_value)[0];
-        getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
+        getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory, "");
     }
 
-    private void getDeviceList(final boolean isRefresh, final int pageNo, String orderBy, String location, String systemCategory) {
+    private void getDeviceList(final boolean isRefresh, final int pageNo, String orderBy, String location, String systemCategory, String searchValue) {
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("wz", location);
         paramMap.put("zl", systemCategory);
-        paramMap.put("key", "");
+        paramMap.put("key", searchValue);
         paramMap.put("pageNo", pageNo + "");
         paramMap.put("pageSize", "20");
         paramMap.put("orderBy", orderBy);
@@ -178,7 +196,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 mTvSort.setText(getResources().getStringArray(R.array.device_sort)[which]);
                                 mOrderBy = getResources().getStringArray(R.array.device_sort_value)[which];
-                                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
+                                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory, mEtSearch.getText().toString().trim());
                             }
                         })
                         .show();
@@ -200,10 +218,12 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         if(type.equals("cancelFilter")) {
             mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
-            mFlFilter.setVisibility(View.GONE);
-            mFilterLocation = bundle.getString("location");
-            mFilterSystemCategory = bundle.getString("system");
-            getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory);
+            if (bundle.get("category").equals(AppConstants.TAG_DEVICE)) {
+                mFlFilter.setVisibility(View.GONE);
+                mFilterLocation = bundle.getString("location");
+                mFilterSystemCategory = bundle.getString("system");
+                getDeviceList(true, 1, mOrderBy, mFilterLocation, mFilterSystemCategory, mEtSearch.getText().toString().trim());
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ import com.cqsynet.ema.R;
 import com.cqsynet.ema.adapter.FilterViewPagerAdapter;
 import com.cqsynet.ema.adapter.LocationRecyclerAdapter;
 import com.cqsynet.ema.adapter.SystemRecyclerAdapter;
+import com.cqsynet.ema.common.AppConstants;
 import com.cqsynet.ema.db.LocationDao;
 import com.cqsynet.ema.db.SystemCategoryDao;
 import com.cqsynet.ema.model.LocationObject;
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * 筛选模块
  */
-public class EquipmentFilterFragment extends BaseFragment implements View.OnClickListener {
+public class DeviceFilterFragment extends BaseFragment implements View.OnClickListener {
 
     private RadioGroup mRadioGroup;
     private ViewPager mVpLocation;
@@ -107,6 +108,7 @@ public class EquipmentFilterFragment extends BaseFragment implements View.OnClic
             case R.id.btnConfirm_fragment_equipment_filter:
                 Bundle bundleConfirm = new Bundle();
                 bundleConfirm.putString("type", "confirmFilter");
+                bundleConfirm.putString("category", AppConstants.TAG_DEVICE);
                 bundleConfirm.putString("location", mSelectedLocationObject != null ? mSelectedLocationObject.WZ_BM : "");
                 bundleConfirm.putString("system", mSelectedSystemCategoryObject != null ? mSelectedSystemCategoryObject.ZL_BM : "");
                 EventBus.getDefault().post(new MessageEvent(bundleConfirm));

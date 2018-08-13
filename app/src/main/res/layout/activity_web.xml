@@ -7,15 +7,8 @@
 
     <include layout="@layout/titlebar"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider"/>
-
-    <!--<include layout="@layout/sort_filter"/>-->
-
-    <FrameLayout
-        android:id="@+id/flRecyclerView_fragment_asset"
+    <WebView
+        android:id="@+id/wv_activity_web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

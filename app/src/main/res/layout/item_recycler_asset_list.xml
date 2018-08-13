@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvStatus_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_gray_frame_background"
+            tools:text="已完成"/>
+
+        <TextView
+            android:id="@+id/tvName_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/tvStatus_item_recycler_asset_list"
+            android:layout_marginRight="4dp"
+            android:maxLines="3"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_largex"
+            tools:text="格力空调_GL42348"/>
+
+        <TextView
+            android:id="@+id/tvNumber_item_recycler_asset_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName_item_recycler_asset_list"
+            android:layout_marginTop="4dp"
+            android:maxLines="5"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="46554845"/>
+
+        <TextView
+            android:id="@+id/tvUser_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/tvNumber_item_recycler_asset_list"
+            android:drawableLeft="@drawable/user"
+            android:drawablePadding="8dp"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="李云龙"/>
+
+        <TextView
+            android:id="@+id/tvLocation_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/tvNumber_item_recycler_asset_list"
+            android:layout_toRightOf="@id/tvUser_item_recycler_asset_list"
+            android:drawableLeft="@drawable/location"
+            android:drawablePadding="8dp"
+            android:textColor="@color/text2"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="大学城"/>
+
+        <TextView
+            android:id="@+id/tvManageDepartment_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/tvLocation_item_recycler_asset_list"
+            android:drawableLeft="@drawable/manage"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_blue_background"
+            tools:text="综合部"/>
+
+        <TextView
+            android:id="@+id/tvUseDepartment_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/tvLocation_item_recycler_asset_list"
+            android:layout_toRightOf="@id/tvManageDepartment_item_recycler_asset_list"
+            android:drawableLeft="@drawable/use"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_blue_background"
+            tools:text="张三"/>
+
+        <TextView
+            android:id="@+id/tvRepairDepartment_item_recycler_asset_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/tvLocation_item_recycler_asset_list"
+            android:layout_toRightOf="@id/tvUseDepartment_item_recycler_asset_list"
+            android:drawableLeft="@drawable/repair"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/shape_blue_background"
+            tools:text="维修部"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

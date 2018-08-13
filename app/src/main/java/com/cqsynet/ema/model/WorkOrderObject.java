@@ -4,6 +4,7 @@ package com.cqsynet.ema.model;
  * 工单对象
  */
 public class WorkOrderObject {
+    public String id; //工单id
     public String gdBm; //工单编码
     public String lcZt; //工单状态
     public String gdMs; //工单描述

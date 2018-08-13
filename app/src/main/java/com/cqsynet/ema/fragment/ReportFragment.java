@@ -60,6 +60,7 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         Bundle bundle = new Bundle();
         bundle.putString("category", AppConstants.TAG_REPORT);
         mListFragment.setArguments(bundle);
+        mFilterFragment.setArguments(bundle);
     }
 
     @Override
@@ -71,12 +72,12 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
                         .title(R.string.device_sort)
                         .dividerColorRes(R.color.divider)
                         .itemsGravity(GravityEnum.CENTER)
-                        .items(R.array.device_sort)
+                        .items(R.array.workorder_sort)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                mTvSort.setText(getResources().getStringArray(R.array.device_sort)[which]);
-                                String value = getResources().getStringArray(R.array.device_sort_value)[which];
+                                mTvSort.setText(getResources().getStringArray(R.array.workorder_sort)[which]);
+                                String value = getResources().getStringArray(R.array.workorder_sort_value)[which];
                                 mListFragment.setOrderByParam(value);
                             }
                         })
@@ -104,8 +105,10 @@ public class ReportFragment extends BaseFragment implements View.OnClickListener
         if(type.equals("cancelFilter")) {
             mFlFilter.setVisibility(View.GONE);
         } else if (type.equals("confirmFilter")) {
-            mFlFilter.setVisibility(View.GONE);
-            mListFragment.setFilter(bundle.getString("startDate"), bundle.getString("endDate"), bundle.getString("status"), bundle.getString("onlyMine"));
+            if (bundle.getString("category").equals(AppConstants.TAG_REPORT)) {
+                mFlFilter.setVisibility(View.GONE);
+                mListFragment.setFilter(bundle.getString("startDate"), bundle.getString("endDate"), bundle.getString("status"), bundle.getString("onlyMine"));
+            }
         }
     }
 
